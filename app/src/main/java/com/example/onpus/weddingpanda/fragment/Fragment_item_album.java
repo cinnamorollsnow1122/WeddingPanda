@@ -85,7 +85,7 @@ public class Fragment_item_album extends Fragment {
             if (requestCode == SELECT_PICTURE) {
                  filemanagerstring = data.getData();
 
-                //OI FILE Manager
+                //OI FILE Manager//
                 String filemanagerstring2 = filemanagerstring.getPath();
 
                 //MEDIA GALLERY
