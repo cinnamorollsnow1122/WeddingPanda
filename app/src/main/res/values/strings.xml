@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">WeddingPanda</string>
+    <string name="title_activity_login">LoginAct</string>
+    <string name="tab_1">message</string>
+    <string name="tab_2">home</string>
+    <string name="tab_3">album</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="auth_failed">login failed!</string>
+    <string name="question1">Would you like to tell us when is your wedding?</string>
+    <string name="question2">OK! Then who are you going to marry?</string>
+
+</resources>

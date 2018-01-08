@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "911661986130",
+    "firebase_url": "https://weddingpanda-f980f.firebaseio.com",
+    "project_id": "weddingpanda-f980f",
+    "storage_bucket": "weddingpanda-f980f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911661986130:android:a89513e5b534c4fc",
+        "android_client_info": {
+          "package_name": "com.example.onpus.weddingpanda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911661986130-vjg52o3lki5qln4cl5ordd9k8u6iq460.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfmC1U6jBywaC2ckxzISnbhRuf0S4I3eM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

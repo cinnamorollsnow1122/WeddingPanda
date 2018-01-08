@@ -1,0 +1,75 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    tools:context="com.example.onpus.weddingpanda.fragment.AlbumAddIFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.CardView
+        android:layout_height="380dp"
+        android:layout_margin="8dp"
+        android:minHeight="300dp"
+        android:background="@color/colorwhite"
+        android:layout_width="match_parent">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_alignParentTop="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/photo"
+            android:id="@+id/uploadphoto"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+            <EditText
+                android:id="@+id/captioninput"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/uploadphoto"
+                android:textColor="#222"
+                android:textStyle="bold"
+                android:textSize="22dp"
+                />
+
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+    <RelativeLayout
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="130dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/chooseCover"
+            android:width="160dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/colorword"
+            android:background="@color/colorbutton"
+            android:text="Choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/Uploadcover"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:width="160dp"
+            android:textColor="@color/colorword"
+            android:background="@color/colorbutton"
+            android:text="Submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+</FrameLayout>
