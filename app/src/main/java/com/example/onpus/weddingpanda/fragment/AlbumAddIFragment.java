@@ -74,6 +74,7 @@ public class AlbumAddIFragment extends Fragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         View view = inflater.inflate(R.layout.fragment_album_add_i, container, false);
+
         ButterKnife.bind(this,view);
 
         return view;

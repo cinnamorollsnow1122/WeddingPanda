@@ -1,0 +1,160 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorwhite"
+    tools:context="com.example.onpus.weddingpanda.fragment.BudgetaddFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="50dp">
+
+        <TableLayout
+            android:gravity="right|center_vertical"
+            android:stretchColumns="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:gravity="center_horizontal">
+                <EditText
+                    android:id="@+id/getItemTitle"
+                    android:padding="20dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="Your Item title"/>
+
+            </TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1mm"
+                android:alpha="0.3"
+                android:background="#000000" >
+            </View>
+            <TableRow
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
+                >
+                <TextView
+                    android:id="@+id/budgetamount"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Budgeted Amount"/>
+                <EditText
+                    android:id="@+id/getBudgetam"
+                    android:hint="$"
+                    android:layout_weight="1"
+                    android:layout_gravity="right"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:width="100dp"
+                    />
+            </TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1mm"
+                android:alpha="0.3"
+                android:background="#000000" >
+            </View>
+            <TableRow
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:padding="10dp">
+                <TextView
+                    android:id="@+id/actualamount"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Actual Amount"/>
+                <EditText
+                    android:id="@+id/getActualam"
+                    android:hint="$"
+                    android:layout_weight="1"
+                    android:layout_gravity="right"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:width="100dp"
+
+                    />
+            </TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1mm"
+                android:alpha="0.3"
+                android:background="#000000" >
+            </View>
+            <TableRow
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:weightSum="1"
+                >
+                <TextView
+                    android:id="@+id/paid"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Paid"/>
+                <CheckBox
+                    android:id="@+id/paidbox"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:width="80dp"
+                    android:layout_gravity="right|center_vertical"
+                    />
+            </TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1mm"
+                android:alpha="0.3"
+                android:background="#000000" >
+            </View>
+            <TableRow
+                android:gravity="center_vertical"
+                android:padding="10dp" >
+
+                <Spinner
+                    android:spinnerMode="dialog"
+                    android:id="@+id/spinner"
+                    android:overlapAnchor="false"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1mm"
+                android:alpha="0.3"
+                android:background="#000000" >
+            </View>
+        </TableLayout>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:text="submit"
+        android:id="@+id/submitBudget"
+        android:textColor="@color/colorword"
+        android:background="@color/colorbutton"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</FrameLayout>

@@ -5,6 +5,7 @@ import android.graphics.Color;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -13,6 +14,7 @@ import com.example.onpus.weddingpanda.fragment.Album;
 import com.example.onpus.weddingpanda.fragment.Fragment_main_couple;
 import com.example.onpus.weddingpanda.fragment.Fragment_navig;
 import com.example.onpus.weddingpanda.fragment.Game;
+import com.example.onpus.weddingpanda.fragment.ToolsParentFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -32,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Fragment_navig navig = new Fragment_navig();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame,navig).commit();
 
@@ -44,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
 // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.msg, R.color.colorAccent);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem("tools", R.drawable.tools, R.color.colorAccent);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.home, R.color.colorAccent);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.tools, R.color.colorAccent);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.home, R.color.colorAccent);
         AHBottomNavigationItem item4 = new AHBottomNavigationItem("album", R.drawable.album, R.color.colorAccent);
         AHBottomNavigationItem item5 = new AHBottomNavigationItem("Game", R.drawable.game, R.color.colorAccent);
 
@@ -113,12 +114,13 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame,albumfragment).commit();
                 }else  if (position==1)
                 {
-                    Fragment_main_couple main_couple = new Fragment_main_couple();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,main_couple).commit();
+                    ToolsParentFragment toolsParentFragment=new ToolsParentFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,toolsParentFragment).commit();
+
                 }else  if (position==2)
                 {
-                    Game gamefragment=new Game();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,gamefragment).commit();
+                    Fragment_main_couple main_couple = new Fragment_main_couple();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,main_couple).commit();
                 }else  if (position==3)
                 {
                     Album albumfragment=new Album();

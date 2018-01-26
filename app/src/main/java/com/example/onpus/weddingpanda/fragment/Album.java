@@ -6,10 +6,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +73,8 @@ public class Album extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_album, container, false);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ButterKnife.bind(this,view);
         initialiseView();
         return view;
@@ -126,7 +130,6 @@ public class Album extends Fragment {
 //                        temp.setCaption(child.child("caption").getValue(String.class));
 //                        temp.setAlbumid(child.child("coverimage").getValue(String.class));
                         albumItems.add(temp);
-
                     } catch (Exception e) {
 
                     }
