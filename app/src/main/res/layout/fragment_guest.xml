@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.onpus.weddingpanda.fragment.GuestFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:src="@drawable/guest" />
+        <TextView
+            android:textColor="@color/wordcolorA"
+            android:id="@+id/acceptNo"
+            android:textSize="23dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="113dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
+            android:text="5" />
+
+        <TextView
+            android:textColor="@color/wordcolorA"
+            android:textSize="23dp"
+            android:layout_marginTop="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="170dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/acceptNo"
+            android:text="7" />
+
+    </RelativeLayout>
+        <ListView
+            android:id="@+id/guestlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</FrameLayout>

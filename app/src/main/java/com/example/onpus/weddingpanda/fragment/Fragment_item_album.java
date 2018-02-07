@@ -67,6 +67,7 @@ public class Fragment_item_album extends Fragment {
     private MyAdapterItem adapter;
 
     private String albumid;
+    private String userid;
     //database
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -87,6 +88,7 @@ public class Fragment_item_album extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             albumid = bundle.getString("albumid");
+            userid = bundle.getString("userid");
             Log.i("BUNDLE",bundle.toString());
         } else Log.i("BUNDLE","Null");
 
@@ -103,7 +105,7 @@ public class Fragment_item_album extends Fragment {
         try {
 //            GridLayoutManager  mLayoutManager = new GridLayoutManager(getActivity(), 2);
 //            recyclerAlbumView.setLayoutManager(mLayoutManager);
-            mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid()).child("album").child(albumid).child("photos");
+            mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(userid).child("album").child(albumid).child("photos");
             StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerAlbumView.setLayoutManager(mLayoutManager);
             recyclerAlbumView.setHasFixedSize(true);

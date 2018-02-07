@@ -6,6 +6,7 @@
     tools:context="com.example.onpus.weddingpanda.fragment.Fragment_main_couple">
 
     <!-- TODO: Update blank fragment layout -->
+<<<<<<< HEAD
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -48,4 +49,16 @@
         android:layout_height="?attr/actionBarSize"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+=======
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+    <TextView
+        android:layout_marginTop="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
+>>>>>>> c013bcea4bbaf6e3fbc6812ce2ebaac5ec836cda
 </FrameLayout>

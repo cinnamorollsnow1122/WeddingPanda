@@ -50,17 +50,15 @@ public class ToolsParentFragment extends Fragment {
         titles.add("Task");
         titles.add("Budget");
         titles.add("Guest");
-        titles.add("Vendor");
 
         for(int i=0;i<titles.size();i++){
             mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(i)));
         }
         List<Fragment> fragments = new ArrayList<>();
 
-        fragments.add(new Album());
+        fragments.add(new TasklistFragment());
         fragments.add(new BudgetFragment());
-        fragments.add(new Album());
-        fragments.add(new Album());
+        fragments.add(new GuestFragment());
 
         FragmentAdapter mFragmentAdapteradapter =
                 new FragmentAdapter(getFragmentManager(), fragments, titles);
