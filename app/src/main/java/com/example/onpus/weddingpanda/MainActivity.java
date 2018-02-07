@@ -156,13 +156,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
                 }else  if (position==2)
                 {
-<<<<<<< HEAD
-                    Game gamePage = new Game();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,gamePage).commit();
-=======
+
                     Game gameFrag = new Game();
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame,gameFrag).commit();
->>>>>>> c013bcea4bbaf6e3fbc6812ce2ebaac5ec836cda
                 }else  if (position==3)
                 {
                     Album albumfragment=new Album();
