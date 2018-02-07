@@ -24,6 +24,8 @@ import com.example.onpus.weddingpanda.R;
 import com.example.onpus.weddingpanda.adapter.GridHolder;
 import com.example.onpus.weddingpanda.adapter.MyAdapterAlbum;
 import com.example.onpus.weddingpanda.constant.AlbumItem;
+import com.example.onpus.weddingpanda.constant.FirebaseHelper;
+import com.example.onpus.weddingpanda.constant.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -92,30 +94,101 @@ public class Album extends Fragment {
 
     }
 
+//    public Boolean isGuest(){
+//
+//        final String[] type = new String[1];
+//        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+//        db.child("Users").child(userId).child("userType").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                type[0] = dataSnapshot.getValue(String.class);
+//                Log.d("typeA","guest");
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//        Log.d("typeB",type[0]);
+//        if(type[0].equals("guest"))
+//            return true;
+//        return false;
+//    }
+
     private void initialiseView() {
-        try {
+        recyclerAlbumView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerAlbumView.setHasFixedSize(true);
+        recyclerAlbumView.setItemViewCacheSize(20);
+        recyclerAlbumView.setDrawingCacheEnabled(true);
+        recyclerAlbumView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        final String[] coupleid = new String[1];
+        final String[] type = new String[1];
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
+        db.child(userId).child("userType").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                type[0] = dataSnapshot.getValue(String.class);
+                Log.d("typeA","guest");
+                //check guest
+                if(type[0].equals("guest")){
+                    mQueryAlbum = db.orderByChild("guest/"+userId).equalTo(false);
+                    mQueryAlbum.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                coupleid[0] = child.getKey();
+                                Log.d("coup;eid",coupleid[0]);
+                            }
+
+
+
+                                mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(coupleid[0]).child("album");
+                            setupAdapter(coupleid[0]);
+
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+                else{
+                    mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid()).child("album");
+                    setupAdapter(currentUser.getUid());
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 //            GridLayoutManager  mLayoutManager = new GridLayoutManager(getActivity(), 2);
 //            recyclerAlbumView.setLayoutManager(mLayoutManager);
-            mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid()).child("album");
+
 //            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 //            recyclerAlbumView.setLayoutManager(mLayoutManager);
-            recyclerAlbumView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerAlbumView.setHasFixedSize(true);
-            recyclerAlbumView.setItemViewCacheSize(20);
-            recyclerAlbumView.setDrawingCacheEnabled(true);
-            recyclerAlbumView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
 //            mQueryAlbum =  mDatabase.orderByChild("Users/"+user.getUid());
             //mListRef.removeValue();
-            setupAdapter();
 
-        } catch (Exception e) {
-
-        }
     }
 
 
-    private void setupAdapter() {
+    private void setupAdapter(final String userid) {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -134,12 +207,12 @@ public class Album extends Fragment {
 
                     }
                 }
-                try{
 
-                    adapter = new MyAdapterAlbum(getActivity(), albumItems);}catch(Exception e)
-                {}                //Log.d("HH",usernames.get(0)+"");
+                    if(!albumItems.isEmpty()) {
+                        adapter = new MyAdapterAlbum(getActivity(), albumItems,userid);
+                        recyclerAlbumView.setAdapter(adapter);
+                    }
 
-                recyclerAlbumView.setAdapter(adapter);
 
                 //adapter.notifyDataSetChanged();
             }

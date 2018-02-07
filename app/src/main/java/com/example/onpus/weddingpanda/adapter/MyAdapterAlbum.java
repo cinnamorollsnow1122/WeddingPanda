@@ -37,10 +37,12 @@ public class MyAdapterAlbum extends RecyclerView.Adapter<GridHolder> {
     ArrayList<AlbumItem> data;
     Bitmap[] bitmaps;
     Context c;
+    String userid;
 
-    public MyAdapterAlbum(Context c,ArrayList<AlbumItem> data) {
+    public MyAdapterAlbum(Context c,ArrayList<AlbumItem> data,String userid) {
             this.c = c;
             this.data = data;
+            this.userid = userid;
     }
         @Override
         public GridHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,6 +61,7 @@ public class MyAdapterAlbum extends RecyclerView.Adapter<GridHolder> {
                     //Do on click stuff
                     Bundle i = new Bundle();
                     i.putString("albumid", data.get(position).getAlbumid());
+                    i.putString("userid",userid);
                     Fragment_item_album frag = new Fragment_item_album();
                     frag.setArguments(i);
                     ((AppCompatActivity) c).getSupportFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack(null).commit();

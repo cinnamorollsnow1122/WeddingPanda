@@ -1,28 +1,57 @@
 package com.example.onpus.weddingpanda;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.example.onpus.weddingpanda.adapter.PageView;
+
+import com.example.onpus.weddingpanda.adapter.MyAdapterAlbum;
+import com.example.onpus.weddingpanda.adapter.SearchListAdapter;
+import com.example.onpus.weddingpanda.constant.AlbumItem;
+import com.example.onpus.weddingpanda.constant.User;
 import com.example.onpus.weddingpanda.fragment.Album;
 import com.example.onpus.weddingpanda.fragment.Fragment_main_couple;
-import com.example.onpus.weddingpanda.fragment.Fragment_navig;
 import com.example.onpus.weddingpanda.fragment.Game;
+
 import com.example.onpus.weddingpanda.fragment.ToolsParentFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth.AuthStateListener authListener;
+import butterknife.ButterKnife;
+import io.reactivex.subjects.PublishSubject;
+
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private FirebaseAuth auth;
+    private com.google.firebase.database.Query mQueryGuest;
+    private DatabaseReference mDatabase;
+    ListView guestListview;
+    SearchListAdapter guestListAdapter;
+    private ArrayList<User> guestItem = new ArrayList<>();
+    private ArrayList<String> guestlist = new ArrayList<>();
 
+    PublishSubject publishSubject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -34,8 +63,16 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Fragment_navig navig = new Fragment_navig();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame,navig).commit();
+        ButterKnife.bind(this);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.mainmenu);
+
+        //firebase
+        auth = FirebaseAuth.getInstance();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame,new Fragment_main_couple()).commit();
 
 
         //Intent intent = new Intent(getApplicationContext(),LoginAct.class);
@@ -44,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
 // Create items
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.msg, R.color.colorAccent);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.home, R.color.colorAccent);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.tools, R.color.colorAccent);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.home, R.color.colorAccent);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.game, R.color.colorAccent);
         AHBottomNavigationItem item4 = new AHBottomNavigationItem("album", R.drawable.album, R.color.colorAccent);
         AHBottomNavigationItem item5 = new AHBottomNavigationItem("Game", R.drawable.game, R.color.colorAccent);
 
@@ -55,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.addItem(item2);
         bottomNavigation.addItem(item3);
         bottomNavigation.addItem(item4);
-        bottomNavigation.setCurrentItem(1);
+        bottomNavigation.setCurrentItem(0);
         Fragment_main_couple main_couple = new Fragment_main_couple();
         //go to main fragment home page
 //        getSupportFragmentManager().beginTransaction().replace(R.id.frame,main_couple).commit();
@@ -110,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
 //                }
                 if (position==0)
                 {
-                    Album albumfragment = new Album();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,albumfragment).commit();
+                    Fragment_main_couple main_couple = new Fragment_main_couple();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,main_couple).commit();
                 }else  if (position==1)
                 {
                     ToolsParentFragment toolsParentFragment=new ToolsParentFragment();
@@ -119,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }else  if (position==2)
                 {
-                    Fragment_main_couple main_couple = new Fragment_main_couple();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,main_couple).commit();
+                    Game gameFrag = new Game();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,gameFrag).commit();
                 }else  if (position==3)
                 {
                     Album albumfragment=new Album();
@@ -138,5 +175,125 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.mainmenu, menu);
+//
+//        MenuItem menuSearchItem = menu.findItem(R.id.my_search);
+//
+//        // Get the SearchView and set the searchable configuration
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//
+//        SearchView searchView = (SearchView) menuSearchItem.getActionView();
+//
+//        // Assumes current activity is the searchable activity
+//
+//
+//        ComponentName cn = new ComponentName(this, SearchActivity.class);
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
+//        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+//        // 這邊讓icon可以還原到搜尋的icon
+////        searchView.setIconifiedByDefault(true);
+////        searchView.setSubmitButtonEnabled(true);
+////        searchView.setOnQueryTextListener(this);
+//        return true;
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                signOut();
+                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, LoginAct.class));
+                return true;
+            case R.id.my_search:
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void signOut() {
+        auth.signOut();
+    }
+
+//search
+    @Override
+    public void onNewIntent(Intent intent){
+        setIntent(intent);
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            //now you can display the results
+        }
+    }
+
+    /**
+     * Initialize friend list
+     */
+    private void initFriendList() {
+
+        mDatabase= FirebaseDatabase.getInstance().getReference().child("Users");
+        mQueryGuest =  mDatabase.orderByChild("userType").equalTo("guest");
+        guestListview = (ListView) findViewById(R.id.guestlist);
+        guestListview.setTextFilterEnabled(false);
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                //ADDED ON 6/4/2017 ALICE
+                guestItem.clear();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                        guestlist.add(child.getKey());
+                        User temp = child.getValue(User.class);
+                        guestItem.add(temp);
+
+                }
+                if(guestItem!=null)
+                    guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestlist);
+
+
+                guestListview.setAdapter(guestListAdapter);
+                //adapter.notifyDataSetChanged();
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
+        // use to enable search view popup text
+        //friendListView.setTextFilterEnabled(true);
+
+        // set up click listener
+//        friendListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if(position>0 && position <= friendList.size()) {
+//                    handelListItemClick((User)friendListAdapter.getItem(position - 1));
+//                }
+//            }
+//        });
+    }
+
+//search
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
 
 }

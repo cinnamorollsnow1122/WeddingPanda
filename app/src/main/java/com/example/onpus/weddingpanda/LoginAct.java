@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,9 @@ public class LoginAct extends AppCompatActivity {
     Button loginButton;
     @BindView(R.id.link_signup)
     TextView signupLink;
+    @BindView(R.id.pbHeaderProgress)
+    ProgressBar progressBar;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,9 +71,10 @@ public class LoginAct extends AppCompatActivity {
                         if (type.equalsIgnoreCase("couple")) {
                             startActivity(new Intent(LoginAct.this, MainActivity.class));
                             mlogin = false;
+                            progressBar.setVisibility(View.VISIBLE);
                             finish();
                         } else {
-                            startActivity(new Intent(LoginAct.this, MainActivity.class));
+                            startActivity(new Intent(LoginAct.this, MainGuestActivity.class));
                             mlogin = false;
                             finish();
                         }
@@ -144,7 +149,7 @@ public class LoginAct extends AppCompatActivity {
                                                     mlogin = false;
                                                     finish();
                                                 } else {
-                                                    startActivity(new Intent(LoginAct.this, MainActivity.class));
+                                                    startActivity(new Intent(LoginAct.this, MainGuestActivity.class));
                                                     mlogin = false;
                                                     finish();
                                                 }

@@ -15,5 +15,8 @@
     <string name="auth_failed">login failed!</string>
     <string name="question1">Would you like to tell us when is your wedding?</string>
     <string name="question2">OK! Then who are you going to marry?</string>
+    <string name="title_activity_main_guest">MainGuestActivity</string>
+    <string name="search_hint">search guest</string>
+    <string name="app_label">guestSearch</string>
 
 </resources>
