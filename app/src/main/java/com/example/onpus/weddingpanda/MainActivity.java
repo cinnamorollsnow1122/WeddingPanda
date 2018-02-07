@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }else  if (position==2)
                 {
-                    Fragment_main_couple main_couple = new Fragment_main_couple();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,main_couple).commit();
+                    Game gamePage = new Game();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,gamePage).commit();
                 }else  if (position==3)
                 {
                     Album albumfragment=new Album();

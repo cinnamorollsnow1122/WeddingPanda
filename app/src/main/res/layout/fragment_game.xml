@@ -6,8 +6,47 @@
     tools:context="com.example.onpus.weddingpanda.fragment.Game">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="game" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/redblue"
+            android:src="@drawable/rbicon"
+            android:layout_margin="30dp"
+            android:maxWidth="150dp"
+            android:maxHeight="150dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp" />
+
+        <ImageView
+            android:id="@+id/guessPhoto"
+            android:src="@drawable/photoguess"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_toRightOf="@+id/redblue"
+            android:layout_width="130dp"
+            android:layout_height="130dp" />
+
+        <ImageView
+            android:src="@drawable/lotteryicon"
+            android:id="@+id/lottery"
+            android:layout_marginLeft="30dp"
+            android:layout_below="@+id/redblue"
+            android:layout_width="130dp"
+            android:layout_height="150dp" />
+
+        <ImageView
+            android:src="@drawable/redpocket"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/lottery"
+            android:layout_below="@+id/guessPhoto"
+            android:layout_width="130dp"
+            android:layout_height="150dp" />
+
+</RelativeLayout>
+
 </FrameLayout>
