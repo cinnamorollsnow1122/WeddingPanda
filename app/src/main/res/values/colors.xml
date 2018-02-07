@@ -8,4 +8,6 @@
     <color name="colorword">#f9ffe5</color>
     <color name="colorbutton">#26b67c</color>
     <color name="wordcolorA">#728126</color>
+    <color name="redA">#de5151</color>
+    <color name="blueB">#5189de</color>
 </resources>

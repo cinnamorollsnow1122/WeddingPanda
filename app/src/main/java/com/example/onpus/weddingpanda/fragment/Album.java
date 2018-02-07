@@ -124,7 +124,7 @@ public class Album extends Fragment {
         recyclerAlbumView.setItemViewCacheSize(20);
         recyclerAlbumView.setDrawingCacheEnabled(true);
         recyclerAlbumView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-
+        //check guest
         final String[] coupleid = new String[1];
         final String[] type = new String[1];
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

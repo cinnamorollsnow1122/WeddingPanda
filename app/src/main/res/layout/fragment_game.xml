@@ -9,6 +9,7 @@
 
 
     <RelativeLayout
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
@@ -38,6 +39,7 @@
             android:layout_height="150dp" />
 
         <ImageView
+            android:id="@+id/redPocket"
             android:src="@drawable/redpocket"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
