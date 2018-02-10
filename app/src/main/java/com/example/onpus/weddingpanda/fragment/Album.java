@@ -147,9 +147,11 @@ public class Album extends Fragment {
                             }
 
 
-
+                            if(coupleid[0]!=null){
                                 mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(coupleid[0]).child("album");
-                            setupAdapter(coupleid[0]);
+                                setupAdapter(coupleid[0]);
+                            }
+
 
                         }
 

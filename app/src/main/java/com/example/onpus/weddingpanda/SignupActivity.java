@@ -142,7 +142,11 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             writeNewUser(name,email);
-                            startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                            if(usertype.equals("guest"))
+                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                            else if(usertype.equals("couple")){
+                                startActivity(new Intent(SignupActivity.this, MainGuestActivity.class));
+                            }
                             finish();
                         }
                     }

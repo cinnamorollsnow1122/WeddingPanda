@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.onpus.weddingpanda.fragment.Fragment_main_couple">
 
@@ -27,6 +28,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/taskprogress"
         android:layout_below="@+id/begin"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
@@ -37,19 +39,24 @@
             android:text="Your tasks for the coming week,"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
 
     </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_below="@+id/taskprogress"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
-
-    <TextView
-        android:layout_marginTop="150dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 </FrameLayout>

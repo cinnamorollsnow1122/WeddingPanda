@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,9 @@ public class GameRB extends AppCompatActivity {
             Button optionA;
     @BindView(R.id.btn_optionB)
             Button optionB;
+    @BindView(R.id.toolbar)
+            Toolbar toolbar;
+
     String type;
     Boolean ansCorrect = false;
     Boolean isoptionAclicked = false;
@@ -57,6 +61,12 @@ public class GameRB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_rb);
         ButterKnife.bind(this);
+        //set toolbar
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Red&Blue");
+
+
+        //check guest and initialize view
         checkGuest();
 
     }
@@ -73,8 +83,10 @@ public class GameRB extends AppCompatActivity {
                 //red blue
                     if(!type.equals("guest")){
                         //dialog for custom / start
-                        next.setVisibility(View.VISIBLE);
-                        initialView(userId);
+//                        next.setVisibility(View.VISIBLE);
+                        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+                        initialView(userId,type.equals("guest"));
 
                     }else{
                         mQueryRB = db.child("Users").orderByChild("guest/"+userId).equalTo(false);
@@ -85,7 +97,7 @@ public class GameRB extends AppCompatActivity {
                                     coupleid[0] = child.getKey();
                                     Log.d("coup;eid",coupleid[0]);
                                 }
-                                initialView(coupleid[0]);
+                                initialView(coupleid[0],type.equals("guest"));
 
                             }
 
@@ -104,7 +116,7 @@ public class GameRB extends AppCompatActivity {
         });
     }
 
-    public void initialView(final String userid){
+    public void initialView(final String userid, final Boolean isGuest){
 
 
         db.child("Games").child(userid).child("Redblue").child("Question").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -162,13 +174,13 @@ public class GameRB extends AppCompatActivity {
                 });
 //                //check ans
 
-                if (next.getVisibility() == View.VISIBLE) {
+
+                if (isGuest) {
                     // Its visible(couple)
-                    next.setOnClickListener(new View.OnClickListener() {
-                        @SuppressLint("ResourceAsColor")
+
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
                             i++;
                             if (questionItems.size()>i) {
                                 optionB.setBackgroundColor(R.color.blueB);
@@ -177,6 +189,11 @@ public class GameRB extends AppCompatActivity {
                                 optionA.setText(questionItems.get(i).getOptionA());
                                 optionB.setText(questionItems.get(i).getOptionB());
                                 db.child("Games").child(userid).child("Redblue").child("Next").setValue(true);
+                            }
+                            else{
+                                new SweetAlertDialog(getApplicationContext())
+                                            .setTitleText("Game Set!")
+                                            .show();
                             }
                         }
                     });
