@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/weddingpanda.iml" filepath="$PROJECT_DIR$/weddingpanda.iml" />
+      <module fileurl="file://D:\androidpj\weddingPanda\app\app.iml" filepath="D:\androidpj\weddingPanda\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weddingPanda.iml" filepath="$PROJECT_DIR$/weddingPanda.iml" />
     </modules>
   </component>
 </project>
