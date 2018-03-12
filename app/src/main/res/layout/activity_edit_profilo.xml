@@ -1,9 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.onpus.weddingpanda.fragment.EditProfiloActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/photo"
+        android:id="@+id/uploadicon"
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
+
+
+
+    <Button
+        android:id="@+id/chooseIcon"
+        android:width="160dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/colorword"
+        android:background="@color/colorbutton"
+        android:text="Choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_toRightOf="@+id/chooseIcon"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/UploadIcon"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="5dp"
+        android:width="160dp"
+        android:textColor="@color/colorword"
+        android:background="@color/colorbutton"
+        android:text="Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

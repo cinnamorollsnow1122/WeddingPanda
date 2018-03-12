@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.onpus.weddingpanda.Game.GameCustomActivity;
 import com.example.onpus.weddingpanda.Game.GameRB;
+import com.example.onpus.weddingpanda.Game.WaitingRmAct;
 import com.example.onpus.weddingpanda.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -124,7 +125,9 @@ public class Game extends Fragment {
 
 
         if (view.getId() == R.id.lottery) {
-            Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "lottery", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), WaitingRmAct.class);
+            startActivity(intent);
         }
         if (view.getId() == R.id.guessPhoto) {
             Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();

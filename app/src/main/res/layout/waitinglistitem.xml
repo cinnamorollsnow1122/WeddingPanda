@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout
+    android:padding="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="70dp">
 
+    <ImageView
+        android:layout_alignParentLeft="true"
+        android:src="@mipmap/ic_iconface"
+        android:id="@+id/iconWList"
+        android:scaleType="centerCrop"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
+
+    <TextView
+        android:id="@+id/iconName"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/iconWList"
+        android:text="Username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/typeUser"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/iconWList"
+        android:layout_below="@+id/iconName"
+        android:text="type"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

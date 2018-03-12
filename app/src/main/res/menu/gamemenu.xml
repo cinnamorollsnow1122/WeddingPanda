@@ -1,10 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--&lt;!&ndash; "Mark Favorite", should appear as action button if possible &ndash;&gt;-->
-    <!--<item android:id="@+id/back"-->
-        <!--app:showAsAction="always"-->
-        <!--app:navigationIcon="?attr/homeAsUpIndicator"/>-->
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item android:id="@+id/add_Guest"
+        android:title="guestAdd"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_search"/>
+    <!--<item android:id="@+id/my_search"-->
+    <!--android:title="Search your guest"-->
+    <!--android:icon="@drawable/ic_search_black_24dp"-->
+    <!--app:showAsAction="ifRoom"-->
+    <!--app:actionViewClass="android.support.v7.widget.SearchView" />-->
+    <item
+        android:id="@+id/action_send"
+        android:title="Send"
+        app:showAsAction="always"/>
 
 
 </menu>

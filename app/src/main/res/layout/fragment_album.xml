@@ -19,9 +19,35 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar"/>
 
+        <RelativeLayout
+            android:background="@color/colorbutton"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/proflio"
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/iconprof"
+                app:srcCompat="@drawable/ic_account_box_black_24dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/iconprof"
+                android:text="Username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/lyj_recycler"
-            android:layout_below="@+id/toolbar"
+            android:layout_below="@+id/proflio"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:padding="5dp"
@@ -38,7 +64,6 @@
         android:layout_marginRight="30dp"
         android:minWidth="140dp"
         android:id="@+id/floatalbum_btn"/>
-
 
 
 </FrameLayout>

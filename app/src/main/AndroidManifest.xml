@@ -60,9 +60,15 @@
         </activity>
         <activity android:name=".Game.GameCustomActivity" />
         <activity android:name=".QuestionAddRBActivity" />
-        <activity android:name=".Game.GameRB"
+        <activity
+            android:name=".Game.GameRB"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".fragment.EditProfiloActivity" />
+        <activity
+            android:name=".Game.WaitingRmAct"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Game.LotteryWheelAct"></activity>
     </application>
 
 </manifest>

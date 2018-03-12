@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.example.onpus.weddingpanda.adapter.MyAdapterAlbum;
 import com.example.onpus.weddingpanda.adapter.SearchListAdapter;
 import com.example.onpus.weddingpanda.constant.AlbumItem;
 import com.example.onpus.weddingpanda.constant.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,23 +44,48 @@ public class SearchActivity extends AppCompatActivity{
     SearchListAdapter guestListAdapter;
     private ArrayList<String> guestList= new ArrayList<>();
     private ArrayList<User> guestItem = new ArrayList<>();
+    String fromwh = "none" ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            fromwh = b.getString("Waitrm");
+        } else Log.i("BUNDLE","Null");
+
+
         //init firebase
-
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-        mQueryGuest = mDatabase.orderByChild("userType").equalTo("guest");
+        if (!fromwh.equals("none")){
 
+            mQueryGuest = mDatabase.orderByChild("couple/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).equalTo(false);
+        }
+        else{
+            mQueryGuest = mDatabase.orderByChild("userType").equalTo("guest");
+
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        guestListview = (ListView) findViewById(R.id.guestListSearch);
 
+        guestListview = (ListView) findViewById(R.id.guestListSearch);
+        //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //What to do on back clicked
+                onBackPressed();
+            }
+        });
+
+
         ButterKnife.bind(this);
 
     }
@@ -111,7 +138,7 @@ public class SearchActivity extends AppCompatActivity{
                         }
 
                             if(guestItem!=null) {
-                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestList);
+                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestList,fromwh);
                             }
                         if(guestListAdapter!=null)
                             guestListview.setAdapter(guestListAdapter);

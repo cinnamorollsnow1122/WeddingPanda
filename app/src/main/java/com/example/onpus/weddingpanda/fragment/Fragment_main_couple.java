@@ -1,6 +1,8 @@
 package com.example.onpus.weddingpanda.fragment;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,12 +15,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.onpus.weddingpanda.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItemClickListener {
+
+    @BindView(R.id.qrcode)
+    ImageView qrcode;
 
 
     public Fragment_main_couple() {
@@ -38,9 +54,14 @@ public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItem
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_fragment_main_couple, container, false);
+        ButterKnife.bind(this,view);
+
         Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.mainmenu);
+//        toolbar.inflateMenu(R.menu.mainmenu);
+
+
+        qrcode();
 //        toolbar.setOnMenuItemClickListener(this);
 //        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 //            @Override
@@ -56,6 +77,8 @@ public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItem
 //        });
         return view;
     }
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.mainmenu, menu);
@@ -72,5 +95,19 @@ public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItem
                 return true;
         }
         return false;
+    }
+
+    //QRCODE
+    public void qrcode(){
+        String text= FirebaseAuth.getInstance().getCurrentUser().getUid(); // Whatever you need to encode in the QR code
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            qrcode.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
     }
 }

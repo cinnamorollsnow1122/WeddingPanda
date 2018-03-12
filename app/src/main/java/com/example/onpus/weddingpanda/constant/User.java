@@ -12,6 +12,16 @@ public class User {
 //    private String password;
     private String userType;
 
+    public String getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(String userPic) {
+        this.userPic = userPic;
+    }
+
+    private String userPic;
+
     public User(){
 
     }

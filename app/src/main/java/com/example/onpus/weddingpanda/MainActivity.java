@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
                 }
                 if(guestItem!=null)
-                    guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestlist);
+//                    guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestlist,);
 
 
                 guestListview.setAdapter(guestListAdapter);

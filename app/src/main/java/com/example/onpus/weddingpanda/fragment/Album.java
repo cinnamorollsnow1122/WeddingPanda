@@ -2,6 +2,7 @@ package com.example.onpus.weddingpanda.fragment;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.onpus.weddingpanda.Game.GameRB;
 import com.example.onpus.weddingpanda.R;
 import com.example.onpus.weddingpanda.adapter.GridHolder;
 import com.example.onpus.weddingpanda.adapter.MyAdapterAlbum;
@@ -35,6 +37,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +51,12 @@ public class Album extends Fragment {
 
     @BindView(R.id.lyj_recycler)
     RecyclerView recyclerAlbumView;
+
+    @BindView(R.id.iconprof)
+    ImageView icon;
+    @BindView(R.id.username)
+    TextView username;
+
     private MyAdapterAlbum adapter;
     protected ArrayList<AlbumItem> albumItems = new ArrayList<>();
     private DatabaseReference mAlbumRef;
@@ -94,6 +104,12 @@ public class Album extends Fragment {
 
     }
 
+    @OnClick(R.id.iconprof)
+    public void clickicon(){
+        Intent intent = new Intent(getActivity(), EditProfiloActivity.class);
+        startActivity(intent);
+    }
+
 //    public Boolean isGuest(){
 //
 //        final String[] type = new String[1];
@@ -118,6 +134,7 @@ public class Album extends Fragment {
 //        return false;
 //    }
 
+
     private void initialiseView() {
         recyclerAlbumView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerAlbumView.setHasFixedSize(true);
@@ -130,6 +147,24 @@ public class Album extends Fragment {
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        //update icon
+        db.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userPic = dataSnapshot.child("userPic").getValue(String.class);
+                Picasso.with(getContext()).load(userPic).into(icon);
+                String name = dataSnapshot.child("name").getValue(String.class);
+                username.setText(name);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         db.child(userId).child("userType").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
