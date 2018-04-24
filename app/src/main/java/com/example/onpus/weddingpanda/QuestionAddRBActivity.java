@@ -58,9 +58,28 @@ public class QuestionAddRBActivity extends AppCompatActivity {
     }
 
     public static class QuestionRB{
+        public String getQuestionkey() {
+            return Questionkey;
+        }
+
+        public void setQuestionkey(String questionkey) {
+            Questionkey = questionkey;
+        }
+
+        private String Questionkey;
         private String question;
         private String optionA;
         private String optionB;
+
+        public Boolean getNext() {
+            return next;
+        }
+
+        public void setNext(Boolean next) {
+            this.next = next;
+        }
+
+        private Boolean next;
 
         private String answer;
 

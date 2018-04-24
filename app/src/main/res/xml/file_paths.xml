@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <files-path name="internal_pictures_files" path="Pictures/" />
+    <external-path name="CameraPicture" path="Android/data/com.example.onpus.weddingpanda/cache/" />
+</paths>

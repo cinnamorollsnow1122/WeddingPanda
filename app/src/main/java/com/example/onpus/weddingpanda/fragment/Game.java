@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.example.onpus.weddingpanda.Game.GameCustomActivity;
 import com.example.onpus.weddingpanda.Game.GameRB;
+import com.example.onpus.weddingpanda.Game.LotteryWheelAct;
 import com.example.onpus.weddingpanda.Game.WaitingRmAct;
 import com.example.onpus.weddingpanda.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +35,8 @@ public class Game extends Fragment {
     @BindView(R.id.redblue)
     ImageView redBlue;
     String type;
+    final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private com.google.firebase.database.Query mQueryType;
 
     private com.google.firebase.database.Query mQueryUserType;
 
@@ -40,12 +44,6 @@ public class Game extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static Game newInstance(String param1, String param2) {
-        Game fragment = new Game();
-        Bundle args = new Bundle();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,10 @@ public class Game extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
+        Bundle bundle = this.getArguments();
+        if(bundle!=null)
+            type = bundle.getString("type");
+        Log.d("typefromAlbum",type);
         return view;
     }
 
@@ -91,7 +92,9 @@ public class Game extends Fragment {
                                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        Intent intent = new Intent(getActivity(), GameRB.class);
+                                        Intent intent = new Intent(getActivity(), WaitingRmAct.class);
+                                        intent.putExtra("type","couple");
+                                        intent.putExtra("Game","Redblue");
                                         startActivity(intent);
                                         sweetAlertDialog.dismissWithAnimation();
 
@@ -107,7 +110,9 @@ public class Game extends Fragment {
                                 })
                                 .show();
                     }else{
-                        Intent intent = new Intent(getActivity(), GameRB.class);
+                        Intent intent = new Intent(getActivity(), WaitingRmAct.class);
+                        intent.putExtra("type","guest");
+                        intent.putExtra("Game","Redblue");
                         startActivity(intent);
                     }
 
@@ -127,7 +132,9 @@ public class Game extends Fragment {
         if (view.getId() == R.id.lottery) {
             Toast.makeText(getActivity(), "lottery", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getActivity(), WaitingRmAct.class);
-            startActivity(intent);
+            intent.putExtra("Game","DrawCircle");
+            checkGuest(intent);
+
         }
         if (view.getId() == R.id.guessPhoto) {
             Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
@@ -135,5 +142,83 @@ public class Game extends Fragment {
         if (view.getId() == R.id.redPocket) {
             Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void checkGuest(final Intent intent){
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        //check if guest
+        db.child("Users").child(currentUser.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String type = dataSnapshot.getValue(String.class);
+                String id = currentUser.getUid();
+                Log.d("typeA","guest");
+                //check guest
+                if(type.equals("guest")) {
+                    mQueryType = db.child("Users").orderByChild("guest/"+id).equalTo(false);
+                    mQueryType.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String coupleid = null;
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                coupleid = child.getKey();
+                            }
+
+
+                            if(coupleid!=null){
+                                checkGameStart(coupleid,intent);
+
+                            }else{
+
+                            }
+
+
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }else{
+                    startActivity(intent);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void checkGameStart(String id, final Intent intent) {
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        db.child("Games").child(id).child("DrawCircle").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("send")) {
+                    // run some code
+
+                    new SweetAlertDialog(getActivity())
+                            .setTitleText("Sorry!")
+                            .setContentText("The game has started!")
+                            .show();
+
+                }
+                else{
+                    startActivity(intent);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -8,15 +8,24 @@ public class AlbumItem {
     private String albumid;
     private String coverimage;
     private String caption;
+    private String creator;
 
     public AlbumItem(){
 
     }
 
-    public AlbumItem(String albumid, String coverimage, String caption) {
+    public AlbumItem(String albumid, String coverimage, String caption,String creator) {
         this.albumid = albumid;
         this.coverimage = coverimage;
         this.caption = caption;
+        this.creator = creator;
+    }
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public String getAlbumid() {

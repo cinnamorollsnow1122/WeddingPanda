@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.onpus.weddingpanda.Scanner.PhotoTakenActivity"
+    >
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/take_picture_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Take A Picture"/>
+        <Button
+            android:id="@+id/sendCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Take A Picture"/>
+        <ImageView
+            android:visibility="gone"
+            android:layout_below="@+id/take_picture_button"
+            android:id="@+id/take_picture_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <FrameLayout
+            android:layout_below="@+id/sendCamera"
+            android:id="@+id/frag_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lyj_recycler_take"
+            android:layout_below="@+id/take_picture_button"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/expanded_image_camera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            />
+        <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="100dp"
+                android:layout_marginRight="30dp"
+                android:minWidth="140dp"
+                app:srcCompat="@drawable/ic_photo_camera_black_24dp"
+                android:id="@+id/camera_floatBtn"/>
+        </FrameLayout>
+</RelativeLayout>

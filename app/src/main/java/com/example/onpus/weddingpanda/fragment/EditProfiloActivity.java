@@ -109,7 +109,6 @@ public class EditProfiloActivity extends AppCompatActivity {
                                     .getTotalByteCount());
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
                             progressDialog.dismiss();
-                            onBackPressed();
 
                         }
                     });

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SearchListAdapter guestListAdapter;
     private ArrayList<User> guestItem = new ArrayList<>();
     private ArrayList<String> guestlist = new ArrayList<>();
-
+    private String userType = "couple";
     PublishSubject publishSubject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         //Intent intent = new Intent(getApplicationContext(),LoginAct.class);
         //startActivity(intent);
+
+        //get user type
+
+
 
         AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
@@ -156,12 +160,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
                 }else  if (position==2)
                 {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", userType );
+                    Log.d("type from Mauin",userType);
                     Game gameFrag = new Game();
+                    gameFrag.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame,gameFrag).commit();
+
                 }else  if (position==3)
                 {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", userType );
+                    Log.d("type from Mauin",userType);
                     Album albumfragment=new Album();
+                    albumfragment.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame,albumfragment).commit();
                 }
 
@@ -211,7 +223,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivity(new Intent(MainActivity.this, LoginAct.class));
                 return true;
             case R.id.my_search:
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+
+                Intent pIntent = new Intent(this, SearchActivity.class);
+                Bundle pBundle = new Bundle();
+                pBundle.putString("Waitrm","search");
+                pIntent.putExtras(pBundle);
+                startActivity(pIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

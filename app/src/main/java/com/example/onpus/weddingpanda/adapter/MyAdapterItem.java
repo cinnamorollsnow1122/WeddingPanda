@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,15 +20,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.onpus.weddingpanda.R;
+import com.example.onpus.weddingpanda.Scanner.PhotoTakenActivity;
 import com.example.onpus.weddingpanda.constant.AlbumItem;
 import com.example.onpus.weddingpanda.constant.InAlbumitem;
 import com.example.onpus.weddingpanda.fragment.Fragment_item_album;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -39,7 +50,7 @@ import butterknife.ButterKnife;
  */
 
 public class MyAdapterItem extends RecyclerView.Adapter<MyAdapterItem.GridItemHolder> {
-    ArrayList<InAlbumitem> data;
+    ArrayList<PhotoTakenActivity.NewAlbumItem> data;
     Bitmap[] bitmaps;
     Context c;
     View view;
@@ -47,9 +58,11 @@ public class MyAdapterItem extends RecyclerView.Adapter<MyAdapterItem.GridItemHo
     Fragment_item_album fragitem;
     int mShortAnimationDuration = 100;
     private Animator mCurrentAnimator;
+    private DatabaseReference mFindUser= FirebaseDatabase.getInstance().getReference().child("Users");
+    ;
 
 
-    public MyAdapterItem(Context c, ArrayList<InAlbumitem> data, Fragment_item_album fragitem) {
+    public MyAdapterItem(Context c, ArrayList<PhotoTakenActivity.NewAlbumItem> data, Fragment_item_album fragitem) {
         this.c = c;
         this.data = data;
         this.fragitem = fragitem;
@@ -63,9 +76,61 @@ public class MyAdapterItem extends RecyclerView.Adapter<MyAdapterItem.GridItemHo
 
     @Override
     public void onBindViewHolder(final GridItemHolder holder, final int position) {
+        Animation myFadeInAnimation =    AnimationUtils.loadAnimation(c , R.anim.fadein);
 
-        Picasso.with(c).load(data.get(position).getImage()).into(holder.photo);
-        holder.caption.setText(data.get(position).getSender());
+        Picasso.with(c).load(data.get(position).getImage()).into(holder.photo ,new Callback() {
+            @Override
+            public void onSuccess() {
+                Animation myFadeInAnimation =    AnimationUtils.loadAnimation(c , R.anim.fadein);
+                holder.photo.startAnimation(myFadeInAnimation);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+//        Picasso.with(c).load(data.get(position).getImage()).into(holder.photo);
+//        holder.photo.startAnimation(myFadeInAnimation);
+
+        //find name
+        //get userlist name
+        mFindUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String username = "";
+                for (DataSnapshot child2:dataSnapshot.getChildren()){
+                    if (data.get(position).getUserlists()!=null){
+                        for (String temp2:data.get(position).getUserlists()){
+                            if(temp2.equals(child2.getKey())){
+                                if (username.equals(""))
+                                    username =  child2.child("name").getValue(String.class);
+                                else
+                                    username = username+" , " +child2.child("name").getValue(String.class);
+                            }
+                        }
+                    }
+
+                }
+                if (username.equals("")){
+                    holder.caption.setVisibility(view.GONE);
+                }
+                else
+                holder.caption.setText("Member : "+ username);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +166,7 @@ public class MyAdapterItem extends RecyclerView.Adapter<MyAdapterItem.GridItemHo
             mCurrentAnimator.cancel();
         }
 
+//        Picasso.with(c).load(data.get(position).getImage()).into(expandedImageView);
         Picasso.with(c).load(data.get(position).getImage()).into(expandedImageView);
 
         // 计算初始小图的边界位置和最终大图的边界位置。

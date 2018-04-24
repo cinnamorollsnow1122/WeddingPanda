@@ -167,20 +167,18 @@ public class AlbumAddIFragment extends Fragment {
         }
     }
 
-    public void newAlbum(final String coverimage,final String caption){
+    public static void newAlbum(final String coverimage, final String caption){
         //add album
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        final DatabaseReference newAlbum=ref.child("Users").child(currentUser.getUid()).child("album").push();
+        final DatabaseReference newAlbum=ref.child("albums").push();
         final String[] pushkey = {""};
 
         pushkey[0] = newAlbum.getKey();
 
         //add album to database
-        newAlbum.setValue(new AlbumItem(pushkey[0], coverimage, caption));
+        newAlbum.setValue(new AlbumItem(pushkey[0], coverimage, caption,currentUser.getUid()));
 
     }
-
-
 
 }

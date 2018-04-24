@@ -10,6 +10,16 @@ public class InAlbumitem {
     private String comment;
     private String id;
 
+    public String getUserlist() {
+        return userlist;
+    }
+
+    public void setUserlist(String userlist) {
+        this.userlist = userlist;
+    }
+
+    private String userlist;
+
     public InAlbumitem(){
 
     }

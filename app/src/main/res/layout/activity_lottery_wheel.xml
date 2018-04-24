@@ -8,4 +8,63 @@
 
 
 
+    <rubikstudio.library.LuckyWheelView
+
+        android:layout_centerInParent="true"
+        app:lkwBackgroundColor="#FF9800"
+        app:lkwTextColor="#263238"
+        app:lkwCenterImage="@drawable/wheel2"
+        app:lkwCursor="@drawable/ic_cursor"
+        android:id="@+id/luckyWheel"
+        android:layout_width="400dp"
+        android:layout_height="400dp" />
+
+
+    <Button
+        android:id="@+id/play"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:text="Start"
+        android:textStyle="bold"
+        android:background="@color/colorbutton"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="200dp"
+        android:layout_height="50dp" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/rewardpage"
+        android:visibility="gone"
+        android:background="@color/colorBg"
+        android:layout_centerInParent="true"
+        android:layout_width="400dp"
+        android:layout_height="500dp"
+        >
+        <ImageView
+            android:maxWidth="300dp"
+            android:maxHeight="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/album"
+            android:id="@+id/getAwardCicle"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:id="@+id/rewardUser"
+            android:textSize="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:text="You get the reward!!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+
+
 </RelativeLayout>

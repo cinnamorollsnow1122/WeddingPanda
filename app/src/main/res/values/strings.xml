@@ -18,5 +18,6 @@
     <string name="title_activity_main_guest">MainGuestActivity</string>
     <string name="search_hint">search guest</string>
     <string name="app_label">guestSearch</string>
+    <string name="title_activity_album_add_user">AlbumAddUserAct</string>
 
 </resources>

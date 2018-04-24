@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 
 public class MainGuestActivity extends AppCompatActivity {
     private FirebaseAuth auth;
+    private String userType = "guest";
 
 
     @Override
@@ -117,8 +119,13 @@ public class MainGuestActivity extends AppCompatActivity {
 //
                     else  if (position==2)
                     {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("type", userType );
+                        Log.d("type from Mauin",userType);
                         Game gameFrag = new Game();
+                        gameFrag.setArguments(bundle);
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame,gameFrag).commit();
+
                     }else  if (position==3)
                     {
                         Album albumfragment=new Album();
@@ -158,5 +165,10 @@ public class MainGuestActivity extends AppCompatActivity {
 
     public void signOut() {
         auth.signOut();
+    }
+
+    //check any invite msg
+    public void getinvite(){
+        
     }
 }

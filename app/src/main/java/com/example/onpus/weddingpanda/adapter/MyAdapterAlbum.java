@@ -22,6 +22,7 @@ import com.example.onpus.weddingpanda.R;
 import com.example.onpus.weddingpanda.constant.AlbumItem;
 import com.example.onpus.weddingpanda.fragment.Album;
 import com.example.onpus.weddingpanda.fragment.Fragment_item_album;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.net.MalformedURLException;
@@ -61,7 +62,11 @@ public class MyAdapterAlbum extends RecyclerView.Adapter<GridHolder> {
                     //Do on click stuff
                     Bundle i = new Bundle();
                     i.putString("albumid", data.get(position).getAlbumid());
-                    i.putString("userid",userid);
+                    i.putString("caption", data.get(position).getCaption());
+                    i.putString("creator", data.get(position).getCreator());
+                    //if guest pass the couple id
+                    if (data.get(position).getCaption().equals("BigDay"))
+                        i.putString("userid", FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Fragment_item_album frag = new Fragment_item_album();
                     frag.setArguments(i);
                     ((AppCompatActivity) c).getSupportFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack(null).commit();

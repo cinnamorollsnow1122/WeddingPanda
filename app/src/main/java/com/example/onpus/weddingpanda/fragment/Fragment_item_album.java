@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.onpus.weddingpanda.R;
+import com.example.onpus.weddingpanda.Scanner.PhotoTakenActivity;
 import com.example.onpus.weddingpanda.adapter.MyAdapterAlbum;
 import com.example.onpus.weddingpanda.adapter.MyAdapterItem;
 import com.example.onpus.weddingpanda.constant.AlbumItem;
@@ -34,6 +35,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -42,7 +45,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -63,18 +69,21 @@ public class Fragment_item_album extends Fragment {
     int PICK_IMAGE_MULTIPLE = 1;
     String imageEncoded;
     List<String> imagesEncodedList;
-    protected ArrayList<InAlbumitem> albumItems = new ArrayList<>();
+    protected ArrayList<PhotoTakenActivity.NewAlbumItem> albumItems = new ArrayList<>();
     private MyAdapterItem adapter;
 
     private String albumid;
     private String userid;
+    private String caption;
+    private String creator;
     //database
     FirebaseStorage storage;
     StorageReference storageReference;
     private DatabaseReference mDatabase;
+    private DatabaseReference mFindAlbum;
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
+     PhotoTakenActivity.NewAlbumItem temp;
     public Fragment_item_album() {
         // Required empty public constructor
     }
@@ -88,7 +97,9 @@ public class Fragment_item_album extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             albumid = bundle.getString("albumid");
+            creator = bundle.getString("creator");
             userid = bundle.getString("userid");
+            caption = bundle.getString("caption");
             Log.i("BUNDLE",bundle.toString());
         } else Log.i("BUNDLE","Null");
 
@@ -105,7 +116,9 @@ public class Fragment_item_album extends Fragment {
         try {
 //            GridLayoutManager  mLayoutManager = new GridLayoutManager(getActivity(), 2);
 //            recyclerAlbumView.setLayoutManager(mLayoutManager);
-            mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(userid).child("album").child(albumid).child("photos");
+            mDatabase= FirebaseDatabase.getInstance().getReference().child("albums").child(albumid).child("photos");
+            mFindAlbum= FirebaseDatabase.getInstance().getReference().child("albums");
+//            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, 1);
             StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerAlbumView.setLayoutManager(mLayoutManager);
             recyclerAlbumView.setHasFixedSize(true);
@@ -124,33 +137,91 @@ public class Fragment_item_album extends Fragment {
 
 
     private void setupAdapter() {
+
+        //find album memember contain this guy
+        Query mAlbum = mDatabase.orderByChild("creator").equalTo(userid);
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //ADDED ON 6/4/2017 ALICE
                 albumItems.clear();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    try {
-                        InAlbumitem temp = child.getValue(InAlbumitem.class);
+                final String[] goon = new String[1];
+                for ( DataSnapshot child : snapshot.getChildren()) {
+                    temp = child.getValue(PhotoTakenActivity.NewAlbumItem.class);
+                        //add member list
+                        if (child.child("userList").getValue()!=null){
+//                            Map<String, Boolean> value = (Map<Integer, String>) child.child("userList").getValue();
+//                            GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {};
+//                            final ArrayList<String> list = new ArrayList<String>(child.child("userList").getValue(genericTypeIndicator));
+                            GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {};
+                            final ArrayList<String> list = new ArrayList<String>(child.child("userList").getValue(genericTypeIndicator));
+                            temp.setUserlists(list);
+//
+//                            Map<String, Boolean> td = (HashMap<String,Boolean>) child.child("userList").getValue();
+//                            ArrayList<String> keys = new ArrayList<>(td.keySet());
+//                            temp.setUserlists(keys);
+
+                        }
+                    if (!albumItems.contains(temp))
+                        albumItems.add(temp);
+
 //                        AlbumItem temp = new AlbumItem();
 //
 //                        temp.setCoverimage(child.child("albumid").getValue(String.class));
 //                        temp.setCaption(child.child("caption").getValue(String.class));
 //                        temp.setAlbumid(child.child("coverimage").getValue(String.class));
-                        albumItems.add(temp);
 
-                    } catch (Exception e) {
-
-                    }
                 }
-                try{
+                //if clicked album = bigday
+                if (caption.equals("BigDay")) {
 
-                    adapter = new MyAdapterItem(getActivity(), albumItems,Fragment_item_album.this);}catch(Exception e)
-                {}                //Log.d("HH",usernames.get(0)+"");
+                    //check other bigday album through userlist
+                    DatabaseReference mBigDay = FirebaseDatabase.getInstance().getReference().child("albums");
+                    mBigDay.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                //find other big day album except current user own
+                                if (child.child("caption").getValue().equals("BigDay")&&!child.child("creator").getValue().equals(currentUser.getUid())) {
+                                    for (DataSnapshot photos : child.child("photos").getChildren()) {
+                                        temp = photos.getValue(PhotoTakenActivity.NewAlbumItem.class);
+                                        if (photos.child("userList").getValue() != null) {
 
-                recyclerAlbumView.setAdapter(adapter);
+                                            GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {
+                                            };
+                                            final ArrayList<String> list = new ArrayList<String>(photos.child("userList").getValue(genericTypeIndicator));
+                                            temp.setUserlists(list);
+                                            if (list.contains(currentUser.getUid()) && !albumItems.contains(temp)) {
+                                                albumItems.add(temp);
+                                                goon[0] = "none";
 
-                //adapter.notifyDataSetChanged();
+                                            }
+
+                                        }
+
+                                    }
+
+
+                                    if (goon[0] != null && goon[0].equals("none")) {
+                                        adapter = new MyAdapterItem(getActivity(), albumItems, Fragment_item_album.this);
+                                        recyclerAlbumView.setAdapter(adapter);
+                                    }
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (!albumItems.isEmpty()||goon[0]==null){
+                    adapter = new MyAdapterItem(getActivity(), albumItems,Fragment_item_album.this);
+                    recyclerAlbumView.setAdapter(adapter);
+                }
             }
 
 
@@ -318,7 +389,7 @@ public class Fragment_item_album extends Fragment {
         //add album
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        final DatabaseReference newAlbum=ref.child("Users").child(currentUser.getUid()).child("album").child(albumid).child("photos").push();
+        final DatabaseReference newAlbum=ref.child("albums").child(albumid).child("photos").push();
         final String[] pushkey = {""};
 
         pushkey[0] = newAlbum.getKey();

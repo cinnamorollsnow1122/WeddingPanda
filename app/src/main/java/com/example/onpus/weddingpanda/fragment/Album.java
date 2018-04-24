@@ -3,10 +3,13 @@ package com.example.onpus.weddingpanda.fragment;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,8 +24,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.onpus.weddingpanda.AlbumAddUserAct;
 import com.example.onpus.weddingpanda.Game.GameRB;
 import com.example.onpus.weddingpanda.R;
+import com.example.onpus.weddingpanda.Scanner.PhotoTakenActivity;
+import com.example.onpus.weddingpanda.Scanner.SimpleScannerActivity;
+import com.example.onpus.weddingpanda.Scanner.SimpleScannerFragment;
+import com.example.onpus.weddingpanda.SearchActivity;
 import com.example.onpus.weddingpanda.adapter.GridHolder;
 import com.example.onpus.weddingpanda.adapter.MyAdapterAlbum;
 import com.example.onpus.weddingpanda.constant.AlbumItem;
@@ -34,6 +42,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -64,6 +73,13 @@ public class Album extends Fragment {
     private DatabaseReference mDatabase;
     private com.google.firebase.database.Query mQueryAlbum;
     private FirebaseAuth mAuth;
+    private String type;
+
+    //for qr code scanner
+    private static final int ZBAR_CAMERA_PERMISSION = 1;
+    private Class<?> mClss;
+
+
 
     public Album() {
         // Required empty public constructor
@@ -77,6 +93,7 @@ public class Album extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //get type
 
     }
 
@@ -85,6 +102,11 @@ public class Album extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_album, container, false);
+//        Bundle bundle = this.getArguments();
+//        if(bundle!=null)
+//            type = bundle.getString("type");
+//        Log.d("typefromAlbum",type);
+
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ButterKnife.bind(this,view);
@@ -92,16 +114,43 @@ public class Album extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.floatalbum_btn)
-    public void onClick(View view){
-        AlbumAddIFragment frag = new AlbumAddIFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.albumFrag
-                        , frag)
-                .addToBackStack(null)
-                .commit();
 
+    @OnClick({R.id.item1_btn_addAlbum,R.id.item2_btn_addphoto,R.id.item3_btn_genqrcode})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.item1_btn_addAlbum:
+                AlbumAddIFragment frag = new AlbumAddIFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.albumFrag
+                                , frag)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case R.id.item2_btn_addphoto:
+//                launchActivity(SimpleScannerFragment.class);
+
+                SimpleScannerFragment frag2 = new SimpleScannerFragment();
+                FragmentManager fragmentManager2 = getFragmentManager();
+                fragmentManager2.beginTransaction()
+                        .add(R.id.albumFrag
+                                , frag2)
+                        .addToBackStack(null)
+                        .commit();
+//                Intent pIntent2 = new Intent(getActivity(), PhotoTakenActivity.class);
+//                startActivity(pIntent2);
+
+                break;
+            case R.id.item3_btn_genqrcode:
+                Intent pIntent = new Intent(getActivity(), AlbumAddUserAct.class);
+                Bundle pBundle = new Bundle();
+                pBundle.putString("Waitrm","album");
+                pBundle.putString("type",type);
+                pIntent.putExtras(pBundle);
+                startActivity(pIntent);
+                break;
+
+        }
     }
 
     @OnClick(R.id.iconprof)
@@ -110,29 +159,8 @@ public class Album extends Fragment {
         startActivity(intent);
     }
 
-//    public Boolean isGuest(){
-//
-//        final String[] type = new String[1];
-//        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-//        db.child("Users").child(userId).child("userType").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                type[0] = dataSnapshot.getValue(String.class);
-//                Log.d("typeA","guest");
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//        Log.d("typeB",type[0]);
-//        if(type[0].equals("guest"))
-//            return true;
-//        return false;
-//    }
+    //scanner
+
 
 
     private void initialiseView() {
@@ -153,7 +181,8 @@ public class Album extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String userPic = dataSnapshot.child("userPic").getValue(String.class);
-                Picasso.with(getContext()).load(userPic).into(icon);
+                if(userPic!=null)
+                    Picasso.with(getContext()).load(userPic).into(icon);
                 String name = dataSnapshot.child("name").getValue(String.class);
                 username.setText(name);
 
@@ -183,8 +212,8 @@ public class Album extends Fragment {
 
 
                             if(coupleid[0]!=null){
-                                mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(coupleid[0]).child("album");
-                                setupAdapter(coupleid[0]);
+//                                mDatabase= FirebaseDatabase.getInstance().getReference().child("albums").child(coupleid[0]);
+                                setupAdapter(coupleid[0],"guest");
                             }
 
 
@@ -199,8 +228,8 @@ public class Album extends Fragment {
 
                 }
                 else{
-                    mDatabase= FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid()).child("album");
-                    setupAdapter(currentUser.getUid());
+//                    mDatabase= FirebaseDatabase.getInstance().getReference().child("albums").child(currentUser.getUid());
+                    setupAdapter(currentUser.getUid(),"couple");
 
                 }
 
@@ -225,43 +254,93 @@ public class Album extends Fragment {
     }
 
 
-    private void setupAdapter(final String userid) {
-        mDatabase.addValueEventListener(new ValueEventListener() {
+    private void setupAdapter(final String userid, final String isGuest) {
+        mDatabase= FirebaseDatabase.getInstance().getReference().child("albums");
+        final Query queryForcoupleItem = mDatabase.orderByChild("creator").equalTo(userid);
+
+        DatabaseReference mBigDay= FirebaseDatabase.getInstance().getReference().child("albums");
+        Query query = mBigDay.orderByChild("caption").equalTo("BigDay");
+        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                //ADDED ON 6/4/2017 ALICE
+            public void onDataChange(final DataSnapshot dataSnapshot) {
                 albumItems.clear();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    try {
-                        AlbumItem temp = child.getValue(AlbumItem.class);
+                final String[] pass = new String[1];
+                String isBigDay = "yes";
+
+                    for (DataSnapshot child: dataSnapshot.getChildren()) {
+                        AlbumItem temp2 = child.getValue(AlbumItem.class);
+                        if (temp2.getCreator().equals(currentUser.getUid())) {
+                            if (!albumItems.contains(temp2))
+                                albumItems.add(temp2);
+                            isBigDay = "yes";
+                            break;
+                        } else {
+                            isBigDay = "none";
+                        }
+                    }
+                if (dataSnapshot.getValue()==null||isBigDay.equals("none")){
+                    String image = "https://firebasestorage.googleapis.com/v0/b/weddingpanda-f980f.appspot.com/o/album%2FVideo-BigDay-940x529.jpg?alt=media&token=20bb97f1-da2c-4e94-8e80-f8c095d573f0";
+                    AlbumAddIFragment.newAlbum(image, "BigDay");
+                }
+
+                queryForcoupleItem.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        //ADDED ON 6/4/2017 ALICE
+                        //check if there is isBigDay album
+                        //check any big day
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            try {
+                                AlbumItem temp = child.getValue(AlbumItem.class);
+                                if (!temp.getCaption().equals("BigDay")){ //skip couple big day album
+                                    if (!albumItems.contains(temp))
+                                        albumItems.add(temp);
+
+                                }
+
+
 //                        AlbumItem temp = new AlbumItem();
 //
 //                        temp.setCoverimage(child.child("albumid").getValue(String.class));
 //                        temp.setCaption(child.child("caption").getValue(String.class));
 //                        temp.setAlbumid(child.child("coverimage").getValue(String.class));
-                        albumItems.add(temp);
-                    } catch (Exception e) {
+                            } catch (Exception e) {
+
+                            }
+                        }
+
+                        if (dataSnapshot!=null){
+                            adapter = new MyAdapterAlbum(getActivity(), albumItems, userid);
+                            recyclerAlbumView.setAdapter(adapter);
+                        }else{
+                            pass[0] = "pass";
+                        }
+
+                        //adapter.notifyDataSetChanged();
+                    }
+
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
                     }
+
+                });
+
+                if (!albumItems.isEmpty()&&pass[0]!=null) {
+                    adapter = new MyAdapterAlbum(getActivity(), albumItems, userid);
+                    recyclerAlbumView.setAdapter(adapter);
                 }
-
-                    if(!albumItems.isEmpty()) {
-                        adapter = new MyAdapterAlbum(getActivity(), albumItems,userid);
-                        recyclerAlbumView.setAdapter(adapter);
-                    }
-
-
-                //adapter.notifyDataSetChanged();
             }
-
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
+
+
 
     }
 
