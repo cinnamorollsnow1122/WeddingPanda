@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.onpus.weddingpanda.QuestionAddRBActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:id="@+id/tableQuestionRB"
+            android:gravity="right|center_vertical"
+            android:stretchColumns="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:gravity="center_horizontal">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/getQuestion"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:padding="20dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="Your Question Here">
+
+
+                </android.support.design.widget.TextInputEditText>
+
+            </TableRow>
+
+        </TableLayout>
+    <RelativeLayout
+        android:gravity="center_horizontal"
+        android:id="@+id/imageHold"
+        android:weightSum="2"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/tableQuestionRB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:id="@+id/photoA"
+            android:scaleType="centerCrop"
+            android:layout_alignParentLeft="true"
+            android:src="@color/colorPrimary"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="160dp"
+            android:layout_height="200dp" />
+
+        <!--<RadioButton-->
+            <!--android:text="photoA" -->
+            <!--android:id="@+id/photoA"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        <ImageView
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:id="@+id/photoB"
+            android:scaleType="centerCrop"
+            android:layout_alignParentRight="true"
+            android:src="@color/colorPrimary"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="160dp"
+            android:layout_height="200dp" />
+    </RelativeLayout>
+
+        <RadioButton
+            android:layout_marginLeft="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageHold"
+            android:text="photoA"
+            android:id="@+id/ansforA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:layout_marginRight="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/imageHold"
+            android:text="photoB"
+            android:id="@+id/ansforB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:text="submit"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/ansforB"
+            android:id="@+id/submitPhoto"
+            android:textColor="@color/colorword"
+            android:background="@color/colorbutton"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+
+</LinearLayout>

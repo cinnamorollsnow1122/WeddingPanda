@@ -56,16 +56,17 @@ import butterknife.OnClick;
 public class CustomDialogClassMsgWin extends Dialog {
     public Activity activity;
     public Dialog dialog;
-    public String coupleid;
-
+    public Boolean win;
+@BindView(R.id.winMsg)
+TextView msg;
     final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-    public CustomDialogClassMsgWin(Activity activity,String coupleid) {
+    public CustomDialogClassMsgWin(Activity activity,Boolean win) {
         super(activity);
         // TODO Auto-generated constructor stub
         this.activity = activity;
-        this.coupleid = coupleid;
+        this.win = win;
     }
 
 
@@ -77,7 +78,8 @@ public class CustomDialogClassMsgWin extends Dialog {
         setContentView(R.layout.dialog_rb_win);
         ButterKnife.bind(this);
         initList();
-
+        if (win)
+            msg.setText("Congrat! You win!");
     }
 
     private void initList() {
@@ -113,7 +115,9 @@ public class CustomDialogClassMsgWin extends Dialog {
 
         Intent pIntent = new Intent(activity, MainActivity.class);
 //    pIntent.putExtra("Game", "Redblue");
+        activity.finish();
         activity.startActivity(pIntent);
+
 
 
     }

@@ -16,6 +16,7 @@ import com.example.onpus.weddingpanda.Game.GameCustomActivity;
 import com.example.onpus.weddingpanda.Game.GameRB;
 import com.example.onpus.weddingpanda.Game.LotteryWheelAct;
 import com.example.onpus.weddingpanda.Game.WaitingRmAct;
+import com.example.onpus.weddingpanda.Game.gamePhoto.GamePhotoCustomAct;
 import com.example.onpus.weddingpanda.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -117,6 +118,44 @@ public class Game extends Fragment {
                     }
 
                 }
+                //start photoGame
+                if (view.getId() == R.id.guessPhoto) {
+
+                    if(!type.equals("guest")){
+                        //dialog for custom / start
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("")
+                                .setContentText("Do you wanna start a new game?")
+                                .setCancelText("Custom")
+                                .setConfirmText("Start it")
+                                .showCancelButton(true)
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        Intent intent = new Intent(getActivity(), WaitingRmAct.class);
+                                        intent.putExtra("type","couple");
+                                        intent.putExtra("Game","PhotoGame");
+                                        startActivity(intent);
+                                        sweetAlertDialog.dismissWithAnimation();
+
+                                    }
+                                })
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        Intent intent = new Intent(getActivity(), GamePhotoCustomAct.class);
+                                        startActivity(intent);
+                                        sDialog.cancel();
+                                    }
+                                })
+                                .show();
+                    }else{
+                        Intent intent = new Intent(getActivity(), WaitingRmAct.class);
+                        intent.putExtra("type","guest");
+                        intent.putExtra("Game","PhotoGame");
+                        startActivity(intent);
+                    }
+                }
 
 
 
@@ -136,9 +175,7 @@ public class Game extends Fragment {
             checkGuest(intent);
 
         }
-        if (view.getId() == R.id.guessPhoto) {
-            Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
-        }
+
         if (view.getId() == R.id.redPocket) {
             Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
         }

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBg"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <android.support.v7.widget.CardView
+        android:visibility="gone"
+        android:id="@+id/gameSet"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        app:cardBackgroundColor="@color/colorbutton"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        >
+        <TextView
+            android:id="@+id/msgRb"
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/colorwhite"
+            android:text="Sorry! You lose!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:id="@+id/backRb"
+            android:textColor="@color/colorbutton"
+            android:background="@color/colorwhite"
+            android:text="back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/cardView2"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        app:cardCornerRadius="60dp"
+        app:layout_constraintVertical_bias="0.07">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="26dp"
+            android:text="Question" />
+
+        <TextView
+            android:id="@+id/questionNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="1/4"
+            android:textSize="30dp" />
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/Textsurvivor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="68dp"
+        android:text="10"
+        android:textSize="40dp"
+ />
+
+    <TextView
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:text="Survivor"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loser"
+        android:layout_marginRight="29dp"
+        android:layout_marginTop="50dp"
+        android:textSize="15dp"
+ />
+
+    <TextView
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/loser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="40"
+        android:textSize="40dp"
+        android:layout_marginRight="29dp"
+        android:layout_marginTop="68dp"
+    />
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_below="@+id/cardView2"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="415dp"
+        android:layout_marginTop="58dp"
+        app:cardCornerRadius="100dp"
+>
+
+
+        <TextView
+            android:id="@+id/questionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:text="@string/question1"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/btn_optionA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="150dp"
+            android:width="450dp"
+            android:background="#de5151"
+            android:padding="30dp"
+            android:text="optionA"
+            android:textColor="@color/colorwhite" />
+
+        <Button
+            android:id="@+id/btn_optionB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="250dp"
+            android:width="450dp"
+            android:background="#5189de"
+            android:padding="30dp"
+            android:text="optionB"
+            android:textColor="@color/colorwhite" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:width="450dp"
+            android:background="@color/colorbutton"
+            android:text="Next"
+            android:textColor="@color/colorwhite"
+            android:visibility="gone" />
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

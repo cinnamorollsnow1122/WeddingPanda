@@ -9,12 +9,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,12 @@ public class GameRB extends AppCompatActivity {
 
     @BindView(R.id.next)
     Button next;
+    @BindView(R.id.msgRb)
+    TextView winMsg;
+    @BindView(R.id.gameSet)
+    CardView gamesetView;
+    @BindView(R.id.cardView)
+    CardView questionCard;
     @BindView(R.id.questionText)
     TextView question;
     @BindView(R.id.btn_optionA)
@@ -83,7 +91,7 @@ public class GameRB extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_rb);
+        setContentView(R.layout.activ_game_rb_2);
         ButterKnife.bind(this);
         //set toolbar
         GameRB.this.setSupportActionBar(toolbar);
@@ -103,7 +111,6 @@ public class GameRB extends AppCompatActivity {
 
         //check guest and initialize view
         checkGuest();
-        cddMsg = new CustomDialogClassMsgWin(GameRB.this,"noth");
     }
 
     //menu
@@ -147,7 +154,7 @@ public class GameRB extends AppCompatActivity {
                 Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
                 //take list
                 //show dialog which allow couple to know the guests answer situation
-                CustomDialogClassRb cdd = new CustomDialogClassRb(GameRB.this);
+                CustomDialogClassRb cdd = new CustomDialogClassRb(GameRB.this,"Redblue");
                 cdd.show();
                 return true;
 
@@ -208,36 +215,76 @@ public class GameRB extends AppCompatActivity {
         });
     }
 
-    public void updateSurvivor(final String userid) {
-        db.child("Games").child(userid).child("Redblue").child("Loser").addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int losernum = (int) dataSnapshot.getChildrenCount();
 
 
-                TextView survivor = (TextView) findViewById(R.id.Textsurvivor);
-                int survivorNum = Integer.valueOf(survivor.getText().toString())-losernum;
-                survivor.setText(String.valueOf(survivorNum));
-                loser.setText(String.valueOf(losernum));
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    public void gameSet(final String userid) {
+    public void gameSet(final String userid, final Boolean end, final Boolean survivorZero,final Boolean press) {
 //        if (cddMsg.isShowing())
 //            cddMsg.cancel();
-        cddMsg = new CustomDialogClassMsgWin(GameRB.this,"noth");
-        if (!isFinishing())
-            cddMsg.show();
+        //show view
+        findSurvivor(userid,end,survivorZero,press);
+
+        if (!userid.equals(userId)){
+            if (end|survivorZero) {
+                questionCard.setVisibility(View.GONE);
+                gamesetView.setVisibility(View.VISIBLE);
+                //check if the current user is winner
+                db.child("Games").child(userid).child("Redblue").child("Winner").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                        if (dataSnapshot.hasChild(userId)) {
+                            winMsg.setText("Congrat! you win!");
+                        } else {
+                            winMsg.setText("Game end");
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+        }else{
+            //couple case
+            if(end||survivorZero){
+                questionCard.setVisibility(View.GONE);
+                gamesetView.setVisibility(View.VISIBLE);
+                db.child("Games").child(userid).child("Redblue").child("Winner").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(userId)) {
+                            winMsg.setText("Congrat!, you win!");
+                        } else {
+                            winMsg.setText("Game end");
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }
+
+
+
+
+
+
+        cddMsg = new CustomDialogClassMsgWin(GameRB.this,end);
+//        if (!isFinishing()|!cddMsg.isShowing())
+//            cddMsg.show();
+
+
 //        db.child("Games").child(userid).child("Redblue").child("AnswerGuest").addListenerForSingleValueEvent(new ValueEventListener() {
 //
 //            @Override
@@ -302,7 +349,7 @@ public class GameRB extends AppCompatActivity {
                 TextView survivor = (TextView) findViewById(R.id.Textsurvivor);
                 survivor.setText(num);
                 String loserNum = "0";
-                loser.setText("123");
+                loser.setText("0");
             }
 
             @Override
@@ -326,6 +373,7 @@ public class GameRB extends AppCompatActivity {
                     db.child("Games").child(userid).child("Redblue").child("Loser").removeValue();
                     //clean the answer sheet
                     db.child("Games").child(userid).child("Redblue").child("AnswerGuest").removeValue();
+                    db.child("Games").child(userid).child("Redblue").child("Winner").removeValue();
 
                 }
 
@@ -360,85 +408,6 @@ public class GameRB extends AppCompatActivity {
 
                 }
 
-                //answer question
-//                if (i < questionItems.size()) {
-//
-//                    optionA.setOnClickListener(new View.OnClickListener() {
-//                        @SuppressLint("ResourceAsColor")
-//                        @Override
-//                        public void onClick(View view) {
-//
-//
-//                            // if no option is chosen
-//                            if (isoptionBclicked||isoptionAclicked){
-//                                Toast.makeText(getApplicationContext(), "You have already chosen your answer", Toast.LENGTH_SHORT).show();
-//                            }
-//                            //after clicked change color and optiona clicked
-//                            else{
-//                                optionA.setBackgroundColor(R.color.common_google_signin_btn_text_dark_pressed);
-//                                isoptionAclicked = true;
-//
-//                            }
-//                            //optionB is not clicked and optionA ans is correct
-//                            if (!isoptionBclicked){
-//                                optionA.setBackgroundColor(R.color.common_google_signin_btn_text_dark_pressed);
-//                                if(optionA.getText().equals(questionItems.get(i).getAnswer())){
-//                                    ansCorrect = true;
-//                                    db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(questionkey).child(userId).setValue(true);
-//
-//                                }
-//                                else{
-//                                    ansCorrect = false;
-//                                    db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(questionkey).child(userId).setValue(false);
-//                                    gameSet(userid);
-//                                }
-//                                isoptionAclicked = false;
-//
-//                            }
-//
-//
-//                        }
-//                    });
-//                    optionB.setOnClickListener(new View.OnClickListener() {
-//                        @SuppressLint("ResourceAsColor")
-//                        @Override
-//                        public void onClick(View view) {
-//
-//
-//                            if (isoptionBclicked||isoptionAclicked){
-//                                Toast.makeText(getApplicationContext(), "You have already chosen your answer", Toast.LENGTH_SHORT).show();
-//                            }
-//                            else{
-//                                optionB.setBackgroundColor(R.color.common_google_signin_btn_text_dark_pressed);
-//                                isoptionBclicked = true;
-//
-//
-//                            }
-//                            //optionA is not clicked and optionB ans is correct
-//                            if (!isoptionAclicked){
-//                                optionB.setBackgroundColor(R.color.common_google_signin_btn_text_dark_pressed);
-//                                if(optionB.getText().equals(questionItems.get(i).getAnswer())){
-//                                    ansCorrect = true;
-//                                    db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(questionkey).child(userId).setValue(true);
-//                                }
-//                                else{
-//                                    ansCorrect = false;
-//                                    db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(questionkey).child(userId).setValue(false);
-//                                    gameSet(userid);
-//                                }
-//                                isoptionBclicked = false;
-//
-//                            }
-//
-//
-//
-//
-//
-//
-//                        }
-//                    });
-//
-//                }
                 toNextQuestion2(userid, size);
 
 
@@ -532,6 +501,7 @@ public class GameRB extends AppCompatActivity {
     public void toNextQuestion2(final String userid, final int size) {
         final Boolean falseM = false;
         final Boolean trueM = true;
+        final String[] questionKeyLast = new String[1];
         db.child("Games").child(userid).child("Redblue").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -545,7 +515,12 @@ public class GameRB extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (press[0]) {
-                                checkansAfterPress(userid);
+                                //get current key and set read
+
+        //if guest didnt ans quesiton
+                                updateSurvivor(userid);
+//                                checkansAfterPress(userid,press[0]);
+
                                 ArrayList<QuestionAddRBActivity.QuestionRB> questionUpdate = new ArrayList<>();
                                 Boolean allread = true;
 
@@ -564,9 +539,6 @@ public class GameRB extends AppCompatActivity {
                                 }
                                 if (!questionUpdate.isEmpty()) {
                                     numberQ++;
-
-
-
                                     questionNumber.setText((numberQ) + "/" + size);
                                     if (userid.equals(userId)){
                                         optionB.setBackgroundColor(getResources().getColor(R.color.blueB));
@@ -576,6 +548,9 @@ public class GameRB extends AppCompatActivity {
                                         question.setText(questionUpdate.get(0).getQuestion());
                                         optionA.setText(questionUpdate.get(0).getOptionA());
                                         optionB.setText(questionUpdate.get(0).getOptionB());
+//                                        if (numberQ ==size-1){
+//                                             questionKeyLast[0] = questionkey;
+//                                        }
                                         db.child("Games").child(userid).child("Redblue").child("currentQuestionKey").setValue(questionkey);
                                         db.child("Games").child(userid).child("Redblue").child("Question").child(questionUpdate.get(0).getQuestionkey()).child("read").setValue(true);
                                     }else{
@@ -589,10 +564,12 @@ public class GameRB extends AppCompatActivity {
 
                                 }
                                 if (allread) {
-                                    gameSet(userid);
+                                    gameSet(userid,allread,false,press[0]);
+                                    //find the last survivor if game set
+
+//                                    findSurvivor(userid,allread,false);
                                 }
                                 //update the textview of surviorand loser
-                                updateSurvivor(userid);
                             }
 
 
@@ -617,6 +594,131 @@ public class GameRB extends AppCompatActivity {
             }
         });
         }
+        //set winner
+        public void findSurvivor(final String userid,final Boolean allread, final Boolean surviZero,final Boolean press){
+
+                db.child("Games").child(userid).child("Redblue").child("Loser").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //game set, all the question is read
+
+                        if (!dataSnapshot.hasChild(userId)) {
+                            if (allread&&press) {
+                                //if guest get four correct
+                                db.child("Games").child(userid).child("Redblue").child("AnswerGuest").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        db.child("Games").child(userid).child("Redblue").child("Winner").child(userId).setValue(true);
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            //if survivor = 0
+            if (surviZero) {
+                db.child("Games").child(userid).child("Redblue").child("Question").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList questionKey = new ArrayList();
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            if (child.child("read").getValue(Boolean.class) != null && child.child("read").getValue(Boolean.class)) {
+                                questionKey.add(child.getKey());
+                            }
+
+                        }
+                        //after get the last current question key find the guest get true or not
+                        //if yes , add him to winner
+                        int size = questionKey.size();
+                        String lastkey = questionKey.get(size - 1).toString();
+                        db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(lastkey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.child(userId).getValue(Boolean.class) != null) {
+                                    if (surviZero&&dataSnapshot.child(userId).getValue(Boolean.class)) {
+
+                                        db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).removeValue();
+                                        db.child("Games").child(userid).child("Redblue").child("Winner").child(userId).setValue(true);
+
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            }
+    public void updateSurvivor(final String userid) {
+        db.child("Games").child(userid).child("Redblue").child("Loser").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int i =0;
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    i++;
+                }
+                int losernum = i;
+//                int losernum = (int) dataSnapshot.getChildrenCount();
+
+
+                TextView survivor = (TextView) findViewById(R.id.Textsurvivor);
+
+                int survivorNum = Integer.valueOf(survivor.getText().toString())-losernum;
+                if (survivorNum<0)
+                    survivorNum = 0;
+                survivor.setText(String.valueOf(survivorNum));
+                loser.setText(String.valueOf(losernum));
+
+                if (survivorNum<=1) {
+//                    findSurvivor(userid,false,true);
+                    db.child("Games").child(userid).child("Redblue").child("Winner").child(userId).setValue(true);
+                    gameSet(userid, false, true, false);
+                }
+//                }else if(survivorNum ==0){
+//                    db.child("Games").child(userid).child("Redblue").child("Winner").child(userId).setValue(true);
+//                    gameSet(userid, false, true,false);
+//                }
+
+//                }else{
+//                    updateSurvivor(userid);
+//
+//                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
     public void setContentNextQuestion(final String userid) {
         db.child("Games").child(userid).child("Redblue").child("currentQuestionKey").addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -661,7 +763,7 @@ public class GameRB extends AppCompatActivity {
     }
 
 
-            public void checkans(final String userid, final String userans) {
+    public void checkans(final String userid, final String userans) {
         db.child("Games").child(userid).child("Redblue").child("currentQuestionKey").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -678,7 +780,30 @@ public class GameRB extends AppCompatActivity {
 
                         } else {
                             ansCorrect = false;
-                            db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(questionkey).child(userId).setValue(false);
+                            //make sure the couple only lose once
+                            if (userid.equals(userId)) {
+                                db.child("Games").child(userid).child("Redblue").child("Loser").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (!dataSnapshot.hasChild(userId)) {
+                                            db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(questionkey).child(userId).setValue(false);
+                                            db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).setValue(true);
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }else{
+                                //for guest
+                                db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(questionkey).child(userId).setValue(false);
+                                db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).setValue(true);
+                            }
+
 //                            if(!userid.equals(userId))
 //                                gameSet(userid);
                         }
@@ -702,36 +827,46 @@ public class GameRB extends AppCompatActivity {
 
 
     }
-    public void checkansAfterPress(final String userid) {
-        db.child("Games").child(userid).child("Redblue").child("currentQuestionKey").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void checkansAfterPress(final String userid,final Boolean press) {
 
+
+        // if guest didnt ans question
+//         db.child("Games").child(userid).child("Redblue").child("currentQuestionKey").addListenerForSingleValueEvent(new ValueEventListener() {
+//             @Override
+//             public void onDataChange(DataSnapshot dataSnapshot) {
+//                String currentKey = dataSnapshot.getValue(String.class);
+//             db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(currentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//                 @Override
+//                 public void onDataChange(DataSnapshot dataSnapshot) {
+//                     if (press&&!dataSnapshot.hasChild(userId)){
+//                        db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).setValue(true);
+//
+//                     }
+//
+//
+//                 }
+//
+//                 @Override
+//                 public void onCancelled(DatabaseError databaseError) {
+//
+//                 }});
+//             }
+
+//             @Override
+//             public void onCancelled(DatabaseError databaseError) {
+//
+//             }});
+        //check loser, if has , get him out
+        db.child("Games").child(userid).child("Redblue").child("Loser").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String currentKey = dataSnapshot.getValue(String.class);
-                db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(currentKey).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue()!=null){
-                            Boolean ansCorrect = dataSnapshot.getValue(Boolean.class);
-                            if (!ansCorrect){
-                                gameSet(userid);
-                                db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).setValue(true);
 
-                            }
-                        }
-                        //if the guest didnt ans the question
-//                        else{
-//                            db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).setValue(true);
-//
-//                        }
+                if (dataSnapshot.hasChild(userId)){
+                    gameSet(userid,false,false,false);
 
-                    }
+                }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
             }
 
             @Override
@@ -739,6 +874,42 @@ public class GameRB extends AppCompatActivity {
 
             }
         });
+//        db.child("Games").child(userid).child("Redblue").child("currentQuestionKey").addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String currentKey = dataSnapshot.getValue(String.class);
+//                db.child("Games").child(userid).child("Redblue").child("AnswerGuest").child(currentKey).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        if (dataSnapshot.getValue()!=null){
+//                            Boolean ansCorrect = dataSnapshot.getValue(Boolean.class);
+//                            if (!ansCorrect){
+//                                db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).setValue(true);
+//                                gameSet(userid);
+//
+//                            }
+//                        }
+//                        //if the guest didnt ans the question
+////                        else{
+////                            db.child("Games").child(userid).child("Redblue").child("Loser").child(userId).setValue(true);
+////
+////                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
     @Override
     protected void onDestroy() {
@@ -762,5 +933,14 @@ public class GameRB extends AppCompatActivity {
             }
         }
         super.onPause();
+    }
+
+    @OnClick(R.id.backRb)
+    public void onClick(){
+        Intent pIntent = new Intent(GameRB.this, MainActivity.class);
+//    pIntent.putExtra("Game", "Redblue");
+        GameRB.this.finish();
+        GameRB.this.startActivity(pIntent);
+
     }
 }

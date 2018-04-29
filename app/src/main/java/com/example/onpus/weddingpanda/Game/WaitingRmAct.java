@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.onpus.weddingpanda.Game.gamePhoto.GamePhoto;
 import com.example.onpus.weddingpanda.LoginAct;
 import com.example.onpus.weddingpanda.MainActivity;
 import com.example.onpus.weddingpanda.R;
@@ -143,6 +144,10 @@ public class WaitingRmAct extends AppCompatActivity {
                     Intent sIntent = new Intent(this, GameRB.class);
                     startActivity(sIntent);
                 }
+                if (game.equals("PhotoGame")){
+                    Intent sIntent = new Intent(this, GamePhoto.class);
+                    startActivity(sIntent);
+                }
 
                 ref.child("Games").child(currentUser.getUid()).child(game).child("send").setValue(true);
 
@@ -229,6 +234,11 @@ public class WaitingRmAct extends AppCompatActivity {
                     }
                     if (game.equals("Redblue")){
                         Intent sIntent = new Intent(WaitingRmAct.this, GameRB.class);
+                        startActivity(sIntent);
+                    }
+
+                    if (game.equals("PhotoGame")){
+                        Intent sIntent = new Intent(WaitingRmAct.this, GamePhoto.class);
                         startActivity(sIntent);
                     }
 

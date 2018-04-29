@@ -53,17 +53,18 @@ import butterknife.OnClick;
 public class CustomDialogClassRb extends Dialog {
     public Activity activity;
     public Dialog dialog;
-
+    String game;
     final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
     @BindView(R.id.answersheet)
     ListView answersheetView;
 
-    public CustomDialogClassRb(Activity activity) {
+    public CustomDialogClassRb(Activity activity,String game) {
         super(activity);
         // TODO Auto-generated constructor stub
         this.activity = activity;
+        this.game = game;
     }
 
 
@@ -81,7 +82,7 @@ public class CustomDialogClassRb extends Dialog {
     private void initList() {
         //enter
 
-        ref.child("Games").child(currentUser.getUid()).child("Redblue").child("waitingrm").addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child("Games").child(currentUser.getUid()).child(game).child("waitingrm").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //for waitingrm
@@ -95,14 +96,14 @@ public class CustomDialogClassRb extends Dialog {
 
                 //get  current question key
 
-                ref.child("Games").child(currentUser.getUid()).child("Redblue").child("currentQuestionKey").addListenerForSingleValueEvent(new ValueEventListener(){
+                ref.child("Games").child(currentUser.getUid()).child(game).child("currentQuestionKey").addListenerForSingleValueEvent(new ValueEventListener(){
 
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String questionKey = dataSnapshot.getValue(String.class);
 
                         //compare the waitinglist and the answerlist, see who havent answered
-                        ref.child("Games").child(currentUser.getUid()).child("Redblue").child("AnswerGuest").child(questionKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        ref.child("Games").child(currentUser.getUid()).child(game).child("AnswerGuest").child(questionKey).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 final ArrayList<String> answerlistid = new ArrayList<>();
@@ -193,8 +194,8 @@ public class CustomDialogClassRb extends Dialog {
 public void dialogClicked(View v) {
     Toast.makeText(getContext(), "You sent your answer", Toast.LENGTH_SHORT).show();
     final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    final DatabaseReference db = ref.child("Games").child(currentUser.getUid()).child("Redblue").child("currentQuestionKey");
-    ref.child("Games").child(userId).child("Redblue").child("press").setValue(true);
+    final DatabaseReference db = ref.child("Games").child(currentUser.getUid()).child(game).child("currentQuestionKey");
+    ref.child("Games").child(userId).child(game).child("press").setValue(true);
 
 //    db.addListenerForSingleValueEvent(new ValueEventListener() {
 //        @Override
@@ -272,31 +273,34 @@ public void dialogClicked(View v) {
             username.setText(userinfo.get(position).getName());
             type.setText(userinfo.get(position).getUserType());
             //check guest ans status : 1. not answer 2. Correct ans 3. Wrong ans 4. Lose
-            if (!answerlistid.contains(userinfo.get(position).getId()))
+            if (!answerlistid.contains(userinfo.get(position).getId())){
                 answerstatus.setText("Not answered");
+
+            }
             else if (answermap.get(partid).equals(true))
                 answerstatus.setText("Correct");
             else{
                 answerstatus.setText("Wrong");
             }
             //check if user lose
-            DatabaseReference mLoser = ref.child("Games").child(currentUser.getUid()).child("Redblue").child("Loser").child(partid);
-            mLoser.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot child:dataSnapshot.getChildren()){
-                        if (child.getValue(String.class).equals(partid)){
+            if (game.equals("Redblue")){
+                DatabaseReference mLoser = ref.child("Games").child(currentUser.getUid()).child("Redblue").child("Loser");
+                mLoser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild(partid)){
                             answerstatus.setText("Lose");
-
                         }
+
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+
+            }
 
 
             Picasso.with(getContext()).load(userinfo.get(position).getUserPic()).into(icon);

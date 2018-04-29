@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/orange"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <android.support.v7.widget.CardView
+        android:visibility="gone"
+        android:id="@+id/gameSet"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/cardView2"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        app:cardBackgroundColor="@color/colorbutton"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        >
+        <TextView
+            android:id="@+id/msgPhoto"
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/colorwhite"
+            android:text="Your score is "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginTop="15dp"
+            android:id="@+id/backphoto"
+            android:textColor="@color/colorbutton"
+            android:background="@color/colorwhite"
+            android:text="back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_margin="5dp"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/cardView2"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="60dp"
+        app:layout_constraintVertical_bias="0.07">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="26dp"
+            android:text="Question" />
+
+        <TextView
+            android:id="@+id/questionNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="1/4"
+            android:textSize="30dp" />
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_margin="5dp"
+
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/scoreBoard"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="60dp"
+        app:layout_constraintVertical_bias="0.07">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="26dp"
+            android:text="Score" />
+
+        <TextView
+            android:id="@+id/scoreValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textSize="30dp" />
+
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+
+        android:id="@+id/cardView"
+        android:layout_below="@+id/cardView2"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="515dp"
+        android:layout_marginTop="48dp"
+        app:cardCornerRadius="100dp"
+        >
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:textSize="14dp"
+        android:id="@+id/questionContent"
+        android:text="Who is the bride?"
+        android:layout_below="@+id/cardView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+<RelativeLayout
+
+    android:layout_gravity="center_horizontal"
+    android:id="@+id/imageHold"
+    android:layout_marginRight="5dp"
+android:weightSum="2"
+android:layout_marginTop="70dp"
+android:layout_below="@+id/questionContent"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content">
+
+
+<ImageView
+    android:background="@drawable/bg_border"
+    android:layout_weight="1"
+    android:layout_marginTop="5dp"
+    android:id="@+id/photoA"
+    android:scaleType="centerCrop"
+    android:layout_alignParentLeft="true"
+    android:src="@color/orange"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="10dp"
+    android:layout_width="160dp"
+    android:layout_height="200dp" />
+
+<!--<RadioButton-->
+<!--android:text="photoA" -->
+<!--android:id="@+id/photoA"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content" />-->
+<ImageView
+    android:background="@drawable/bg_border"
+    android:layout_weight="1"
+    android:layout_marginTop="5dp"
+    android:id="@+id/photoB"
+    android:scaleType="centerCrop"
+    android:layout_alignParentRight="true"
+    android:src="@color/orange"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="10dp"
+    android:layout_width="160dp"
+    android:layout_height="200dp" />
+</RelativeLayout>
+
+
+
+</android.support.v7.widget.CardView>
+</RelativeLayout>
