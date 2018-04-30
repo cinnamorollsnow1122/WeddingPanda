@@ -8,12 +8,15 @@
     >
 
         <Button
+
             android:visibility="gone"
             android:id="@+id/take_picture_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Take A Picture"/>
         <Button
+            android:textColor="@color/wordcolorB"
+            android:background="@color/colorbutton"
             android:id="@+id/sendCamera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

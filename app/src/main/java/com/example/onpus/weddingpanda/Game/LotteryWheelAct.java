@@ -107,10 +107,13 @@ public class LotteryWheelAct extends AppCompatActivity {
 
 ////
 
+        luckyWheelView.setLuckyWheelBackgrouldColor(0xFF8BC34A);
+        luckyWheelView.setLuckyWheelCenterImage(getResources().getDrawable(R.drawable.wheel));
+        luckyWheelView.setLuckyWheelTextColor(0xFF424242);
 
         /*luckyWheelView.setLuckyWheelBackgrouldColor(0xff0000ff);
         luckyWheelView.setLuckyWheelTextColor(0xffcc0000);
-        luckyWheelView.setLuckyWheelCenterImage(getResources().getDrawable(R.drawable.icon));
+//        luckyWheelView.setLuckyWheelCenterImage(getResources().getDrawable(R.drawable.icon));
         luckyWheelView.setLuckyWheelCursorImage(R.drawable.ic_cursor);*/
 
 //        findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
@@ -336,9 +339,9 @@ public class LotteryWheelAct extends AppCompatActivity {
 //                                            });
 
                                     if(i%2==0)
-                                        luckyItem.color = 0xffFFF3E0;
+                                        luckyItem.color = 0xFFE8F5E9;
                                     else{
-                                        luckyItem.color = 0xffFFE0B2;
+                                        luckyItem.color = 0xFFFFAB91;
 
                                     }
 

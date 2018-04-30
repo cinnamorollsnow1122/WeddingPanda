@@ -13,17 +13,16 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
-            android:text="Wedding Panda"
-            android:textColor="@color/colorword"
-            android:textSize="40dp"
-            android:layout_gravity="center_horizontal" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title"
+            android:layout_gravity="center_horizontal"
+            />
 
         <!--  Name Label -->
         <android.support.design.widget.TextInputLayout
+            android:textColorHint="@color/colorbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -39,6 +38,7 @@
 
         <!-- Email Label -->
         <android.support.design.widget.TextInputLayout
+            android:textColorHint="@color/colorbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -52,6 +52,7 @@
 
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
+            android:textColorHint="@color/colorbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -70,12 +71,16 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:buttonTint="@color/colorbutton"
+                android:textColor="@color/colorbutton"
                 android:id="@+id/couple"
                 android:text="Couple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <RadioButton
+                android:buttonTint="@color/colorbutton"
+                android:textColor="@color/colorbutton"
                 android:id="@+id/guest"
                 android:layout_marginLeft="30dp"
                 android:text="Guest"
@@ -93,7 +98,7 @@
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:background="@color/colorbutton"
-            android:textColor="@color/colorword"
+            android:textColor="@color/wordcolorB"
             android:text="Create Account"/>
 
         <TextView android:id="@+id/link_login"

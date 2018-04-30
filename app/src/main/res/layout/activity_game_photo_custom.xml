@@ -4,13 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.onpus.weddingpanda.Game.GameCustomActivity">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+
 
     <ListView
-        android:layout_marginTop="55dp"
-        android:id="@+id/questionList"
+        android:id="@+id/questionListPH"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBg"
     tools:context="com.example.onpus.weddingpanda.QuestionAddRBActivity">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
                 android:gravity="center_horizontal">
 
                 <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/colorbutton"
                     android:id="@+id/getQuestion"
                     android:inputType="text"
                     android:maxLines="1"
@@ -48,6 +50,7 @@
                 >
 
                 <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/colorbutton"
                     android:id="@+id/getOptionA"
                     android:hint="Option A here"
                     android:gravity="left"
@@ -71,6 +74,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp">
                 <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/colorbutton"
                     android:id="@+id/getOptionB"
                     android:hint="Option B here"
                     android:gravity="left"
@@ -94,6 +98,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp">
                 <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/colorbutton"
                     android:id="@+id/getAns"
                     android:hint="Answer here"
                     android:gravity="left"
@@ -116,10 +121,11 @@
         </TableLayout>
 
         <Button
+
             android:text="submit"
             android:layout_below="@+id/tableQuestionRB"
             android:id="@+id/submitQuestion"
-            android:textColor="@color/colorword"
+            android:textColor="@color/wordcolorB"
             android:background="@color/colorbutton"
             android:layout_centerHorizontal="true"
             android:layout_width="300dp"

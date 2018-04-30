@@ -3,12 +3,19 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorBg">#b1eacd</color>
+    <color name="colorBg">#68845d</color>
     <color name="colorwhite">#ffffff</color>
     <color name="colorword">#f9ffe5</color>
-    <color name="colorbutton">#26b67c</color>
+    <color name="colorbutton">#ffe4aa</color>
     <color name="wordcolorA">#728126</color>
+    <color name="wordcolorB">#404040</color>
     <color name="redA">#de5151</color>
+    <color name="redB">#FF8C91</color>
     <color name="blueB">#5189de</color>
     <color name="orange">#ffdd99</color>
+    <color name="wordColorB">#738126</color>
+    <color name="wheel1">#fff4dc</color>
+    <color name="wheel2">#a1d5b8</color>
+    <color name="wheelBG">#55c0a4</color>
+
 </resources>

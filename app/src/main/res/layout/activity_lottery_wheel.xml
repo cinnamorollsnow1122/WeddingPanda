@@ -23,7 +23,7 @@
     <Button
         android:id="@+id/play"
         android:textSize="20sp"
-        android:textColor="@android:color/white"
+        android:textColor="@color/wordcolorB"
         android:text="Start"
         android:textStyle="bold"
         android:background="@color/colorbutton"

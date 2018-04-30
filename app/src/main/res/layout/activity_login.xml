@@ -20,14 +20,21 @@
             android:layout_height="wrap_content" >
         </ProgressBar>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
-            android:text="Wedding Panda"
-            android:textColor="@color/colorword"
-            android:textSize="40dp"
-            android:layout_gravity="center_horizontal" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="72dp"-->
+            <!--android:layout_marginBottom="24dp"-->
+            <!--android:text="Wedding Panda"-->
+            <!--android:textColor="@color/colorword"-->
+            <!--android:textSize="40dp"-->
+            <!--android:layout_gravity="center_horizontal" />-->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title"
+            android:layout_gravity="center_horizontal"
+            />
 
         <!-- Email Label -->
         <android.support.design.widget.TextInputLayout
@@ -35,11 +42,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_email"
+            <EditText
+
+                android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email" />
+                android:hint="Email"
+                android:textColor="@color/colorbutton"
+                />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
@@ -62,7 +73,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:textColor="@color/colorword"
+            android:textColor="@color/wordcolorB"
             android:background="@color/colorbutton"
             android:text="Login"/>
 
@@ -72,6 +83,7 @@
             android:layout_marginBottom="24dp"
             android:text="No account yet? Create one"
             android:gravity="center"
+            android:textColor="@color/colorbutton"
             android:textSize="16dip"/>
 
     </LinearLayout>

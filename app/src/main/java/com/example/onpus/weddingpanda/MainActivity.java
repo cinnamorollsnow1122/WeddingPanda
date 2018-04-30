@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.colorBg));
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.mainmenu);
 
@@ -85,11 +86,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
 // Create items
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.home, R.color.colorAccent);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.tools, R.color.colorAccent);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.game, R.color.colorAccent);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem("album", R.drawable.album, R.color.colorAccent);
-        AHBottomNavigationItem item5 = new AHBottomNavigationItem("Game", R.drawable.game, R.color.colorAccent);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.home, R.color.colorBg);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.tools, R.color.colorBg);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.game, R.color.colorBg);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem("album", R.drawable.album, R.color.colorBg);
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem("Game", R.drawable.game, R.color.colorBg);
 
 // Add items
         bottomNavigation.addItem(item1);

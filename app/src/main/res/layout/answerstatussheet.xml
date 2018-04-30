@@ -37,7 +37,7 @@
         android:layout_marginLeft="140dp"
         android:text="status"
         android:textSize="20dp"
-        android:textColor="@color/colorbutton"
+        android:textColor="@color/wordcolorA"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

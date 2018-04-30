@@ -57,10 +57,10 @@ public class MainGuestActivity extends AppCompatActivity {
             AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
         // Create items
-            AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.home, R.color.colorAccent);
-            AHBottomNavigationItem item2 = new AHBottomNavigationItem("Invitation", R.drawable.ic_insert_invitation_black_24dp, R.color.colorAccent);
-            AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.game, R.color.colorAccent);
-            AHBottomNavigationItem item4 = new AHBottomNavigationItem("Album", R.drawable.album, R.color.colorAccent);
+            AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.home, R.color.colorBg);
+            AHBottomNavigationItem item2 = new AHBottomNavigationItem("Invitation", R.drawable.ic_insert_invitation_black_24dp, R.color.colorBg);
+            AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.game, R.color.colorBg);
+            AHBottomNavigationItem item4 = new AHBottomNavigationItem("Album", R.drawable.album, R.color.colorBg);
 
         // Add items
             bottomNavigation.addItem(item1);
