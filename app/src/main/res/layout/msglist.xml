@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:textSize="19dp"
+        android:id="@+id/leftText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentStart="true"
+        android:text="Hello this is me!!"
+        android:background="@color/colorwhite"
+        android:padding="8dp"
+        android:elevation="2dp"
+        android:layout_alignParentLeft="true" />
+
+
+    <TextView
+        android:textSize="19dp"
+        android:id="@+id/rightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentEnd="true"
+        android:text="Hi!! How are you!!"
+        android:background="@color/colorBg"
+        android:textColor="@color/colorwhite"
+        android:textColorHighlight="@color/colorwhite"
+        android:padding="8dp"
+        android:elevation="2dp"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:layout_below="@+id/rightText"
+
+        android:id="@+id/rightImage"
+        android:padding="8dp"
+        android:elevation="2dp"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"
+        android:background="@color/colorBg"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_below="@+id/leftText"
+        android:id="@+id/leftImage"
+        android:padding="8dp"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

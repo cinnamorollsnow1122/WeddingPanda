@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBg"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.onpus.weddingpanda.Weddinginfo_act">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:id="@+id/weddinginfo"
+            android:gravity="right|center_vertical"
+            android:stretchColumns="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:gravity="center_horizontal">
+
+                <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/colorbutton"
+                    android:id="@+id/getvenue"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:padding="20dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:hint="Your venue Here">
+
+
+                </android.support.design.widget.TextInputEditText>
+
+            </TableRow>
+
+            <TableRow
+                android:gravity="center_horizontal">
+
+                <android.support.design.widget.TextInputEditText
+                    android:textColorHint="@color/colorbutton"
+                    android:id="@+id/getTime"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:padding="20dp"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:hint="when is the wedding">
+
+
+                </android.support.design.widget.TextInputEditText>
+
+            </TableRow>
+
+        </TableLayout>
+
+
+
+        <RelativeLayout
+            android:gravity="center_horizontal"
+            android:id="@+id/imageHold"
+            android:weightSum="2"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/weddinginfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:id="@+id/imageCover"
+                android:scaleType="centerCrop"
+                android:layout_alignParentLeft="true"
+                android:src="@color/orange"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="160dp"
+                android:layout_height="200dp" />
+            <TextView
+                android:textColor="@color/orange"
+                android:layout_marginLeft="30dp"
+                android:layout_below="@+id/imageCover"
+                android:text="coverImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!--<RadioButton-->
+            <!--android:text="photoA" -->
+            <!--android:id="@+id/photoA"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+            <ImageView
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:id="@+id/seatingplan"
+                android:scaleType="centerCrop"
+                android:layout_alignParentRight="true"
+                android:src="@color/orange"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="160dp"
+                android:layout_height="200dp" />
+
+            <TextView
+                android:textColor="@color/orange"
+                android:layout_marginRight="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/seatingplan"
+                android:text="seatPlan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+
+        <Button
+
+            android:text="submit"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/imageHold"
+            android:id="@+id/submitPhoto"
+            android:textColor="@color/wordcolorB"
+            android:background="@color/colorbutton"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

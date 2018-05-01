@@ -18,6 +18,7 @@ import com.example.onpus.weddingpanda.R;
 import com.example.onpus.weddingpanda.fragment.Album;
 import com.example.onpus.weddingpanda.fragment.Fragment_main_couple;
 import com.example.onpus.weddingpanda.fragment.Game;
+import com.example.onpus.weddingpanda.fragment.InvitationFragment;
 import com.example.onpus.weddingpanda.fragment.ToolsParentFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -36,6 +37,7 @@ public class MainGuestActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.mainmenu);
         ButterKnife.bind(this);
+        toolbar.setTitle("Wedding Panda(Guest version");
 
 //
 //        int[] tabColors = getApplicationContext().getResources().getIntArray(R.array.tab_colors);
@@ -111,12 +113,13 @@ public class MainGuestActivity extends AppCompatActivity {
                     if (position==0) {
                         Fragment_main_couple main_couple = new Fragment_main_couple();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame, main_couple).commit();
-                    }
-//                    }else  if (position==1)
-//                    {
-////                        ToolsParentFragment toolsParentFragment=new ToolsParentFragment();
-////                        getSupportFragmentManager().beginTransaction().replace(R.id.frame,toolsParentFragment).commit();
-//
+
+                    }else  if (position==1)
+
+                {
+                    InvitationFragment invitationFragment = new InvitationFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, invitationFragment).commit();
+                }
                     else  if (position==2)
                     {
                         Bundle bundle = new Bundle();

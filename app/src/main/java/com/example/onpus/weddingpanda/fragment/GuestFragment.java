@@ -1,6 +1,7 @@
 package com.example.onpus.weddingpanda.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.onpus.weddingpanda.R;
 import com.example.onpus.weddingpanda.SearchActivity;
+import com.example.onpus.weddingpanda.Weddinginfo_act;
 import com.example.onpus.weddingpanda.adapter.SearchListAdapter;
 import com.example.onpus.weddingpanda.constant.CustomDialogClassRb;
 import com.example.onpus.weddingpanda.constant.User;
@@ -37,6 +39,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class GuestFragment extends Fragment {
@@ -94,7 +97,10 @@ public class GuestFragment extends Fragment {
         });
 
     }
-
+@OnClick(R.id.addInfo)
+public void onClick(){
+        startActivity(new Intent(getActivity(), Weddinginfo_act.class));
+}
     class DataListAdapter extends BaseAdapter {
         ArrayList<User> userinfo = new ArrayList<>();
         Context c ;
