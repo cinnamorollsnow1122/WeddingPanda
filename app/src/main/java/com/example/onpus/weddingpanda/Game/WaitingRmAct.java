@@ -176,7 +176,7 @@ public class WaitingRmAct extends AppCompatActivity {
                 //check guest
                 if(type.equals("guest")) {
                     //if it is guest
-                    mQueryType = db.child("Users").orderByChild("guest/"+id).equalTo(false);
+                    mQueryType = db.child("Users").orderByChild("guest/"+id).equalTo(true);
                     mQueryType.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -344,7 +344,7 @@ public class WaitingRmAct extends AppCompatActivity {
                                 Log.d("typeA","guest");
                                 //check guest
                                 if(type.equals("guest")) {
-                                    mQueryType = ref.child("Users").orderByChild("guest/"+id).equalTo(false);
+                                    mQueryType = ref.child("Users").orderByChild("guest/"+id).equalTo(true);
                                     mQueryType.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {

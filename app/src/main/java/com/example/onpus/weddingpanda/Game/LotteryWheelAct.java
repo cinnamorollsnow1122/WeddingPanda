@@ -175,7 +175,7 @@ public class LotteryWheelAct extends AppCompatActivity {
                 //check guest
                 if(type.equals("guest")) {
                     findViewById(R.id.play).setVisibility(View.GONE);
-                    mQueryType = ref.child("Users").orderByChild("guest/"+id).equalTo(false);
+                    mQueryType = ref.child("Users").orderByChild("guest/"+id).equalTo(true);
                     mQueryType.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

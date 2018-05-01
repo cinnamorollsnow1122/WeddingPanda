@@ -55,6 +55,7 @@ public class chatbotact extends AppCompatActivity implements AIListener{
     RelativeLayout addBtn;
     @BindView(R.id.expanded_image_chat)
     ImageView expandedImageView;
+
     View view;
 
     //firebase
@@ -114,8 +115,8 @@ public class chatbotact extends AppCompatActivity implements AIListener{
 
                 if (!message.equals("")) {
 
-                    InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(message, "user");
-                    ref.child("chat").push().setValue(chatMessage);
+                    InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(message, currentUser.getUid());
+                    ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
 
                     aiRequest.setQuery(message);
                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -142,11 +143,12 @@ public class chatbotact extends AppCompatActivity implements AIListener{
                                         String reply = result.getFulfillment().getSpeech();
                                         //check requirement in database
                                         String coupleid = "";
+                                        String bot = currentUser.getUid()+": bot";
                                         for (DataSnapshot child : dataSnapshot.child("Users").child(currentUser.getUid()).child("couple").getChildren()) {
                                             coupleid = child.getKey();
                                             break;
                                         }
-                                        if (reply.contains("are going to have their wedding")){
+                                        if (reply.contains(" going to have their wedding")){
 
                                             //find couple name
                                             String name = dataSnapshot.child("Users").child(coupleid).child("name").getValue(String.class);
@@ -154,9 +156,9 @@ public class chatbotact extends AppCompatActivity implements AIListener{
                                                     String hello = reply.replace("XXX",name);
                                                     String coverimage = dataSnapshot.child("WeddingInfo").child(coupleid).child("coverimage").getValue(String.class);
 
-                                                    InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(hello, "bot");
+                                                    InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(hello, bot);
                                                     chatMessage.setMsgImage(coverimage);
-                                                    ref.child("chat").push().setValue(chatMessage);
+                                                    ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
                                                 }
 
                                         }else if(reply.contains("wedding will take place in")){
@@ -164,23 +166,51 @@ public class chatbotact extends AppCompatActivity implements AIListener{
                                             String venue = dataSnapshot.child("WeddingInfo").child(coupleid).child("venue").getValue(String.class);
                                             if (venue!=null){
                                                 String hello = reply.replace("XXX",venue);
-                                                InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(hello, "bot");
-                                                ref.child("chat").push().setValue(chatMessage);
+                                                InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(hello, bot);
+                                                ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
                                             }
 
                                         }else if(reply.contains("wedding will be held on")){
                                             String date = dataSnapshot.child("WeddingInfo").child(coupleid).child("date").getValue(String.class);
                                             if (date!=null){
                                                 String hello = reply.replace("XXX",date);
-                                                InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(hello, "bot");
-                                                ref.child("chat").push().setValue(chatMessage);
+                                                InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(hello, bot);
+                                                ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
+                                            }
+
+                                        }else if(reply.contains("Thank you! Do you have"))
+                                        {
+                                            ref.child("Users").child(currentUser.getUid()).child("couple").child(coupleid).setValue(true);
+                                            ref.child("Users").child(coupleid).child("guest").child(currentUser.getUid()).setValue(true);
+                                            InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(reply, bot);
+                                            ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
+                                        }else if(reply.contains("Ok......I will tell the couple!")||reply.contains("I am sorry to hear that......I will make")){
+                                            //guest refuse to go the wedding
+
+                                        }
+                                        else if(reply.contains("You will sit ")||reply.contains("You table number")){
+                                            //show the seat plan
+                                            String seat =  dataSnapshot.child("WeddingInfo").child(coupleid).child("seatImage").getValue(String.class);
+                                            String seatid =  dataSnapshot.child("Users").child(currentUser.getUid()).child("Tableno").getValue(String.class);
+                                            if (seat != null&&seatid!=null){
+                                                 reply = reply.replace("XX",seatid);
+                                                InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(reply, bot);
+                                                chatMessage.setMsgImage(seat);
+                                                ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
+
+
+                                            }else{
+                                                 reply = "I am sorry! the couple hasnt released the seating plan!";
+                                                InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(reply, bot);
+                                                ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
+
                                             }
 
                                         }
                                         else{
 
-                                            InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(reply, "bot");
-                                            ref.child("chat").push().setValue(chatMessage);
+                                            InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(reply, bot);
+                                            ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
                                         }
 
 
@@ -246,11 +276,12 @@ public class chatbotact extends AppCompatActivity implements AIListener{
 //            }
         });
 
-        adapter = new FirebaseRecyclerAdapter<InvitationFragment.ChatMessage, chat_rec>(InvitationFragment.ChatMessage.class,R.layout.msglist,chat_rec.class,ref.child("chat")) {
+        adapter = new FirebaseRecyclerAdapter<InvitationFragment.ChatMessage, chat_rec>(InvitationFragment.ChatMessage.class,R.layout.msglist,chat_rec.class,ref.child("chat").child(currentUser.getUid())) {
             @Override
             protected void populateViewHolder(final chat_rec viewHolder,  InvitationFragment.ChatMessage model, final int position) {
+                String bot = currentUser.getUid()+": bot";
 
-                if (model.getMsgUser().equals("user")) {
+                if (model.getMsgUser().equals(currentUser.getUid())) {
 
 
                     viewHolder.rightText.setText(model.getMsgText());
@@ -260,7 +291,7 @@ public class chatbotact extends AppCompatActivity implements AIListener{
                     viewHolder.leftImage.setVisibility(View.GONE);
                     viewHolder.rightImage.setVisibility(View.GONE);
                 }
-                else {
+                else if (model.getMsgUser().equals(bot)){
                     viewHolder.leftText.setText(model.getMsgText());
                     viewHolder.rightText.setVisibility(View.GONE);
                     viewHolder.leftText.setVisibility(View.VISIBLE);
@@ -315,43 +346,59 @@ public class chatbotact extends AppCompatActivity implements AIListener{
     private void start(AIConfiguration config) {
        final  AIRequest startaiRequest = new AIRequest();
        final AIDataService aiDataService = new AIDataService(this,config);
+       ref.child("Users").child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+               if (dataSnapshot.hasChild("couple")){
+                   ref.child("chat").child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(DataSnapshot dataSnapshot) {
 
-        ref.child("chat").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue()==null){
-                    startaiRequest.setQuery("WELCOME");
-                    new AsyncTask<AIRequest,Void,AIResponse>(){
+                           if (dataSnapshot.getValue()==null){
+                               startaiRequest.setQuery("WELCOME");
+                               final String bot = currentUser.getUid()+": bot";
 
-                        @Override
-                        protected AIResponse doInBackground(AIRequest... aiRequests) {
-                            final AIRequest request = aiRequests[0];
-                            try {
-                                final AIResponse response = aiDataService.request(startaiRequest);
-                                return response;
-                            } catch (AIServiceException e) {
-                            }
-                            return null;
-                        }
-                        @Override
-                        protected void onPostExecute(AIResponse response) {
-                            if (response != null) {
-                                Result result = response.getResult();
-                                String reply = result.getFulfillment().getSpeech();
-                                InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(reply, "bot");
-                                ref.child("chat").push().setValue(chatMessage);
-                            }
-                        }
-                    }.execute(startaiRequest);
-                }
-            }
+                               new AsyncTask<AIRequest,Void,AIResponse>(){
+
+                                   @Override
+                                   protected AIResponse doInBackground(AIRequest... aiRequests) {
+                                       final AIRequest request = aiRequests[0];
+                                       try {
+                                           final AIResponse response = aiDataService.request(startaiRequest);
+                                           return response;
+                                       } catch (AIServiceException e) {
+                                       }
+                                       return null;
+                                   }
+                                   @Override
+                                   protected void onPostExecute(AIResponse response) {
+                                       if (response != null) {
+                                           Result result = response.getResult();
+                                           String reply = result.getFulfillment().getSpeech();
+                                           InvitationFragment.ChatMessage chatMessage = new InvitationFragment.ChatMessage(reply, bot);
+                                           ref.child("chat").child(currentUser.getUid()).push().setValue(chatMessage);
+                                       }
+                                   }
+                               }.execute(startaiRequest);
+                           }
+                       }
 
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                       @Override
+                       public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                       }
+                   });
+               }
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
+
     }
 
     public void ImageViewAnimatedChange(Context c, final ImageView v, final Bitmap new_image) {

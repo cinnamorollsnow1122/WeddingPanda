@@ -33,10 +33,10 @@
 
     <TextView
         android:id="@+id/ansstatus"
-        android:layout_toRightOf="@+id/iconWList"
-        android:layout_marginLeft="140dp"
         android:text="status"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
         android:textColor="@color/wordcolorA"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"

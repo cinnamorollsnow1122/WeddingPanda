@@ -19,13 +19,20 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.onpus.weddingpanda.R;
+import com.example.onpus.weddingpanda.chatbotact;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,9 +40,10 @@ import butterknife.ButterKnife;
 
 public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItemClickListener {
 
-    @BindView(R.id.qrcode)
-    ImageView qrcode;
-
+    @BindView(R.id.imageCover)
+    ImageView imageCover;
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
     public Fragment_main_couple() {
         // Required empty public constructor
@@ -59,9 +67,9 @@ public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItem
         Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 //        toolbar.inflateMenu(R.menu.mainmenu);
+        setCoverImage();
 
-
-        qrcode();
+//        qrcode();
 //        toolbar.setOnMenuItemClickListener(this);
 //        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 //            @Override
@@ -76,6 +84,23 @@ public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItem
 //            }
 //        });
         return view;
+    }
+
+    private void setCoverImage() {
+        db.child("WeddingInfo").child(userId).child("coverimage").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String imageUrl = dataSnapshot.getValue(String.class);
+                Picasso.with(getContext())
+                        .load(imageUrl)
+                        .into(imageCover);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -98,16 +123,16 @@ public class Fragment_main_couple extends Fragment implements Toolbar.OnMenuItem
     }
 
     //QRCODE
-    public void qrcode(){
-        String text= FirebaseAuth.getInstance().getCurrentUser().getUid(); // Whatever you need to encode in the QR code
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-            qrcode.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void qrcode(){
+//        String text= FirebaseAuth.getInstance().getCurrentUser().getUid(); // Whatever you need to encode in the QR code
+//        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+//        try {
+//            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
+//            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+//            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+//            qrcode.setImageBitmap(bitmap);
+//        } catch (WriterException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

@@ -12,6 +12,16 @@ public class User {
 //    private String password;
     private String userType;
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    private Boolean status;
+
     public String getUserPic() {
         return userPic;
     }

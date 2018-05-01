@@ -208,6 +208,7 @@ public class SearchActivity extends AppCompatActivity{
         private String id;
         private String name;
         private String email;
+        private boolean status;
         //    private String password;
         private String userType;
 
@@ -259,6 +260,13 @@ public class SearchActivity extends AppCompatActivity{
         public String getUserType(){ return userType;}
 
 
+        public void setStatus(boolean status) {
+            this.status = status;
+        }
+
+        public boolean getStatus() {
+            return status;
+        }
     }
 
 }

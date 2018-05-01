@@ -201,7 +201,7 @@ public class Album extends Fragment {
                 Log.d("typeA","guest");
                 //check guest
                 if(type[0].equals("guest")){
-                    mQueryAlbum = db.orderByChild("guest/"+userId).equalTo(false);
+                    mQueryAlbum = db.orderByChild("guest/"+userId).equalTo(true);
                     mQueryAlbum.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

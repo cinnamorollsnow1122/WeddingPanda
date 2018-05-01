@@ -192,7 +192,7 @@ public class Game extends Fragment {
                 Log.d("typeA","guest");
                 //check guest
                 if(type.equals("guest")) {
-                    mQueryType = db.child("Users").orderByChild("guest/"+id).equalTo(false);
+                    mQueryType = db.child("Users").orderByChild("guest/"+id).equalTo(true);
                     mQueryType.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

@@ -17,6 +17,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.example.onpus.weddingpanda.R;
 import com.example.onpus.weddingpanda.fragment.Album;
 import com.example.onpus.weddingpanda.fragment.Fragment_main_couple;
+import com.example.onpus.weddingpanda.fragment.Fragment_main_guest;
 import com.example.onpus.weddingpanda.fragment.Game;
 import com.example.onpus.weddingpanda.fragment.InvitationFragment;
 import com.example.onpus.weddingpanda.fragment.ToolsParentFragment;
@@ -50,7 +51,7 @@ public class MainGuestActivity extends AppCompatActivity {
             //firebase
             auth = FirebaseAuth.getInstance();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame,new Fragment_main_couple()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame,new Fragment_main_guest()).commit();
 
 
             //Intent intent = new Intent(getApplicationContext(),LoginAct.class);
@@ -70,7 +71,7 @@ public class MainGuestActivity extends AppCompatActivity {
             bottomNavigation.addItem(item3);
             bottomNavigation.addItem(item4);
             bottomNavigation.setCurrentItem(0);
-            Fragment_main_couple main_couple = new Fragment_main_couple();
+        Fragment_main_guest main_guest = new Fragment_main_guest();
             //go to main fragment home page
 //        getSupportFragmentManager().beginTransaction().replace(R.id.frame,main_couple).commit();
 // Set background color
@@ -111,8 +112,8 @@ public class MainGuestActivity extends AppCompatActivity {
                 public boolean onTabSelected(int position, boolean wasSelected) {
                     // Do something cool here...
                     if (position==0) {
-                        Fragment_main_couple main_couple = new Fragment_main_couple();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame, main_couple).commit();
+                        Fragment_main_guest main_guest = new Fragment_main_guest();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame, main_guest).commit();
 
                     }else  if (position==1)
 

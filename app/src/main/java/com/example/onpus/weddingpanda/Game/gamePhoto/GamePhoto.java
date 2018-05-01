@@ -136,7 +136,7 @@ public class GamePhoto extends AppCompatActivity{
 //                        toNextQuestion(userId);
 
                     } else {
-                        mQueryGamePhoto = db.child("Users").orderByChild("guest/" + userId).equalTo(false);
+                        mQueryGamePhoto = db.child("Users").orderByChild("guest/" + userId).equalTo(true);
                         mQueryGamePhoto.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {

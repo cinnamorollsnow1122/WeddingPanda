@@ -1,6 +1,9 @@
 package com.example.onpus.weddingpanda.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -30,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -54,6 +59,7 @@ public class GuestFragment extends Fragment {
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     com.google.firebase.database.Query mQueryGuest;
+    com.google.firebase.database.Query mQueryacceptGuest;
 
     public GuestFragment() {
         // Required empty public constructor
@@ -76,18 +82,47 @@ public class GuestFragment extends Fragment {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                 ArrayList<User> guestItem = new ArrayList<>();
+                 final ArrayList<SearchActivity.User> guestItem = new ArrayList<>();
+                 int invitedno  = 0;
+
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                   User temp = child.getValue(User.class);
+                    SearchActivity.User temp = child.getValue(SearchActivity.User.class);
+                    temp.setStatus(false);
+                    temp.setId(child.getKey());
                     if(!guestItem.contains(temp))
                         guestItem.add(temp);
+                    invitedno++;
 
                 }
-                if(guestItem!=null) {
-                    GuestFragment.DataListAdapter guestListAdapter = new GuestFragment.DataListAdapter(getContext(), guestItem);
-                    guestlist.setAdapter(guestListAdapter);
+                inviteNo.setText(Integer.toString(invitedno));
+                mQueryacceptGuest = db.child("Users").orderByChild("couple/" + userId).equalTo(true);
+                mQueryacceptGuest.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int acceptno  = (int)dataSnapshot.getChildrenCount();
+                        acceptNo.setText(Integer.toString(acceptno));
 
-                }
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            SearchActivity.User temp = child.getValue(SearchActivity.User.class);
+                            temp.setStatus(true);
+                            temp.setId(child.getKey());
+                            if(!guestItem.contains(temp))
+                                guestItem.add(temp);
+
+                        }
+                        if(guestItem!=null) {
+                            GuestFragment.DataListAdapter guestListAdapter = new GuestFragment.DataListAdapter(getContext(), guestItem);
+                            guestlist.setAdapter(guestListAdapter);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -102,14 +137,16 @@ public void onClick(){
         startActivity(new Intent(getActivity(), Weddinginfo_act.class));
 }
     class DataListAdapter extends BaseAdapter {
-        ArrayList<User> userinfo = new ArrayList<>();
+        ArrayList<SearchActivity.User> userinfo = new ArrayList<>();
         Context c ;
         DataListAdapter() {
             userinfo = null;
 
         }
 
-        public DataListAdapter( Context c,ArrayList<User> userinfo) {
+
+
+        public DataListAdapter( Context c,ArrayList<SearchActivity.User> userinfo) {
             this.userinfo = userinfo;
             this.c = c;
 
@@ -132,26 +169,74 @@ public void onClick(){
         }
 
 
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, final ViewGroup parent) {
 
             LayoutInflater inflater = getLayoutInflater();
             View row;
-            row = inflater.inflate(R.layout.waitinglistitem, parent, false);
-            final TextView username,type,answerstatus;
+            row = inflater.inflate(R.layout.answerstatussheet, parent, false);
+            final TextView username,type,invitestatus;
             ImageView icon;
 //            final String partid = userinfo.get(position).getId();
             username = (TextView) row.findViewById(R.id.iconName);
             icon=(ImageView)row.findViewById(R.id.iconWList);
             type=(TextView)row.findViewById(R.id.typeUser);
-            answerstatus = (TextView)row.findViewById(R.id.ansstatus);
+            invitestatus = (TextView)row.findViewById(R.id.ansstatus);
+            if (userinfo.get(position).getStatus())
+                invitestatus.setText("accepted");
+            else{
+                invitestatus.setText("invited");
+
+            }
             username.setText(userinfo.get(position).getName());
             type.setText(userinfo.get(position).getUserType());
+            username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addSeatPlan(parent,userinfo.get(position).getId());
+                }
+            });
             String size = String.valueOf(userinfo.size());
-            inviteNo.setText(size);
-            acceptNo.setText(size);
+//            inviteNo.setText(size);
+//            acceptNo.setText(size);
             Picasso.with(getContext()).load(userinfo.get(position).getUserPic()).into(icon);
 
             return (row);
+        }
+
+        public void addSeatPlan(ViewGroup parent, final String id){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Add table number");
+            View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialoglayout, parent, false);
+            // Set up the input
+
+            final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+            builder.setView(viewInflated);
+
+            // Set up the buttons
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    String m_Text = input.getText().toString();
+                    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                    db.child("Users").child(id).child("Tableno").setValue(m_Text);
+//                    newCategory(m_Text);
+
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            Dialog d = builder.show();
+            int dividerId = d.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+            int textViewId = d.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+            TextView tv = (TextView) d.findViewById(textViewId);
+            tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+
         }
     }
 }

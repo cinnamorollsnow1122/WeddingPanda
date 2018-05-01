@@ -186,7 +186,7 @@ public class GameRB extends AppCompatActivity {
 //                        toNextQuestion(userId);
 
                 } else {
-                    mQueryRB = db.child("Users").orderByChild("guest/" + userId).equalTo(false);
+                    mQueryRB = db.child("Users").orderByChild("guest/" + userId).equalTo(true);
                     mQueryRB.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
