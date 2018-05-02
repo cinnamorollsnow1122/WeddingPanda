@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.onpus.weddingpanda.Game.WaitingRmAct;
 import com.example.onpus.weddingpanda.adapter.MyAdapterAlbum;
 import com.example.onpus.weddingpanda.adapter.SearchListAdapter;
 import com.example.onpus.weddingpanda.constant.AlbumItem;
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ import butterknife.ButterKnife;
 public class SearchActivity extends AppCompatActivity{
 
     private com.google.firebase.database.Query mQueryGuest;
-    private com.google.firebase.database.Query mQueryGuestName;
+    private com.google.firebase.database.Query mQueryType;
     private DatabaseReference mDatabase;
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -65,7 +67,8 @@ public class SearchActivity extends AppCompatActivity{
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         if (!fromwh.equals("search")){
             //find the guest alread invited
-            mQueryGuest = mDatabase.orderByChild("couple/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).equalTo(false);
+
+            mQueryGuest = mDatabase.orderByChild("couple/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).equalTo(true);
         }
         else{// from simple search
             mQueryGuest = mDatabase.orderByChild("userType").equalTo("guest");
@@ -137,57 +140,190 @@ public class SearchActivity extends AppCompatActivity{
             public boolean onQueryTextChange(final String s) {
                 //get all text changes
                 Log.i("well", " this worked");
-                mQueryGuest.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        //ADDED ON 6/4/2017 ALICE
-                        guestItem.clear();
-//                        guestList.clear();
-                        for (DataSnapshot child : snapshot.getChildren()) {
-//                                guestList.add(child.getKey());
-                                User temp = child.getValue(User.class);
-                                Log.d("quert",s);
-                                Log.d("String",temp.getName());
-                                temp.setId(child.getKey());
-                                if(temp.getName().contains(s)&&!guestItem.contains(temp))
-                                    guestItem.add(temp);
-                        }
+                //check if guest
+                mDatabase.child(currentUser.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
 
-                        //for album search
-                        if(fromwh.equals("album")){
-                            mDatabase.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final String type = dataSnapshot.getValue(String.class);
+                        String id = currentUser.getUid();
+                        Log.d("typeA","guest");
+                        //check guest
+                        if(type.equals("guest")) {
+                            //if it is guest
+                            mQueryType = mDatabase.orderByChild("guest/"+id).equalTo(true);
+                            mQueryType.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User temp = dataSnapshot.getValue(User.class);
-                                    if(temp.getName().contains(s)&&!guestItem.contains(temp))
-                                        guestItem.add(temp);
+                                    String coupleid = null;
+                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                        coupleid = child.getKey();
+                                    }
+
+
+                                    if(coupleid!=null){
+                                        //find couple id
+                                        mQueryGuest = mDatabase.orderByChild("couple/"+coupleid).equalTo(true);
+                                        mQueryGuest.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot snapshot) {
+                                                //ADDED ON 6/4/2017 ALICE
+                                                guestItem.clear();
+//                        guestList.clear();
+                                                for (DataSnapshot child : snapshot.getChildren()) {
+//                                guestList.add(child.getKey());
+                                                    User temp = child.getValue(User.class);
+                                                    Log.d("quert",s);
+                                                    Log.d("String",temp.getName());
+                                                    temp.setId(child.getKey());
+                                                    if(temp.getName().contains(s)&&!guestItem.contains(temp))
+                                                        guestItem.add(temp);
+                                                }
+
+                                                //for album search
+                                                if(fromwh.equals("album")){
+//                                                    mDatabase.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                                                        @Override
+//                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                                                            User temp = dataSnapshot.getValue(User.class);
+//                                                            if(temp.getName().contains(s)&&!guestItem.contains(temp))
+//                                                                guestItem.add(temp);
+//                                                            if(guestItem!=null) {
+//                                                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,fromwh,type);
+////                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestList,fromwh,type);
+//                                                            }
+//                                                            if(guestListAdapter!=null)
+//                                                                guestListview.setAdapter(guestListAdapter);
+////                            guestListAdapter.notifyDataSetChanged();
+//
+//                                                        }
+//
+//                                                        @Override
+//                                                        public void onCancelled(DatabaseError databaseError) {
+//
+//                                                        }
+//                                                    });
+
+
+                                                }
+                                                if(guestItem!=null) {
+                                                    guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,fromwh,type);
+//                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestList,fromwh,type);
+                                                }
+                                                if(guestListAdapter!=null)
+                                                    guestListview.setAdapter(guestListAdapter);
+
+                                            }
+
+
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+
+                                        });
+
+
+
+                                    }else{
+                                        new SweetAlertDialog(SearchActivity.this)
+                                                .setTitleText("Sorry!")
+                                                .setContentText("You didnt join any wedding!")
+                                                .show();
+                                    }
+
 
                                 }
+
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
 
                                 }
                             });
-                        }
 
-                            if(guestItem!=null) {
-                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,fromwh,type);
+                        }else{
+//                    send(id);//for testing//couple
+                            mQueryGuest.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    //ADDED ON 6/4/2017 ALICE
+                                    guestItem.clear();
+//                        guestList.clear();
+                                    for (DataSnapshot child : snapshot.getChildren()) {
+//                                guestList.add(child.getKey());
+                                        User temp = child.getValue(User.class);
+                                        Log.d("quert",s);
+                                        Log.d("String",temp.getName());
+                                        temp.setId(child.getKey());
+                                        if(temp.getName().contains(s)&&!guestItem.contains(temp))
+                                            guestItem.add(temp);
+                                    }
+
+                                    //for album search
+                                    if(fromwh.equals("album")){
+//                                        mDatabase.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                                            @Override
+//                                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                                User temp = dataSnapshot.getValue(User.class);
+//                                                if(temp.getName().contains(s)&&!guestItem.contains(temp))
+//                                                    guestItem.add(temp);
+//                                                if(guestItem!=null) {
+//                                                    guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,fromwh,type);
+////                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestList,fromwh,type);
+//                                                }
+//                                                if(guestListAdapter!=null)
+//                                                    guestListview.setAdapter(guestListAdapter);
+////                            guestListAdapter.notifyDataSetChanged();
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onCancelled(DatabaseError databaseError) {
+//
+//                                            }
+//                                        });
+//                            //check guest
+                                        if(guestItem!=null) {
+                                            guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,fromwh,type);
 //                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestList,fromwh,type);
-                            }
-                        if(guestListAdapter!=null)
-                            guestListview.setAdapter(guestListAdapter);
+                                        }
+                                        if(guestListAdapter!=null)
+                                            guestListview.setAdapter(guestListAdapter);
+
+                                    }else{
+                                        if(guestItem!=null) {
+                                            guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,fromwh,type);
+//                                guestListAdapter = new SearchListAdapter(getApplicationContext(), guestItem,guestList,fromwh,type);
+                                        }
+                                        if(guestListAdapter!=null)
+                                            guestListview.setAdapter(guestListAdapter);
 //                            guestListAdapter.notifyDataSetChanged();
+                                    }
+
+
+                                }
+
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+
+                            });
+                        }
                     }
-
-
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-
                 });
+
+
+
 
 
                 return false;

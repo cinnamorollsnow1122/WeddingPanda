@@ -137,7 +137,7 @@ public class Album extends Fragment {
                                 , frag2)
                         .addToBackStack(null)
                         .commit();
-//                Intent pIntent2 = new Intent(getActivity(), PhotoTakenActivity.class);
+//                Intent pIntent2 = new Intent(getActivity(), SimpleScannerActivity.class);
 //                startActivity(pIntent2);
 
                 break;

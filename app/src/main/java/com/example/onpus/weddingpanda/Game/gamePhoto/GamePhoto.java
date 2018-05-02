@@ -166,6 +166,8 @@ public class GamePhoto extends AppCompatActivity{
         }
 
         public void initialView(final String userid, final Boolean isGuest) {
+            questionCard.setVisibility(View.VISIBLE);
+            gamesetView.setVisibility(View.GONE);
             //gameset
             db.child("Games").child(userid).child("PhotoGame").child("GameSet").addValueEventListener(new ValueEventListener() {
                 @Override
@@ -193,6 +195,7 @@ public class GamePhoto extends AppCompatActivity{
                     if (userid.equals(userId)){
                         db.child("Games").child(userid).child("PhotoGame").child("AnswerGuest").removeValue();
                         db.child("Games").child(userid).child("PhotoGame").child("Score").removeValue();
+                        db.child("Games").child(userid).child("PhotoGame").child("GameSet").removeValue();
 
                     }
 
@@ -385,7 +388,7 @@ public class GamePhoto extends AppCompatActivity{
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (press[0]) {
 
-                                updatescore(userId);
+                                updatescore(userid);
                                 isImageAClicked = false;
                                 isImageBClicked = false;
                                 imageA.setAlpha(255);
@@ -537,23 +540,27 @@ public class GamePhoto extends AppCompatActivity{
     }
     public void updatescore(final String userid){
 
-//                            db.child("Games").child(userid).child("PhotoGame").child("Score").addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                    if (dataSnapshot!=null){
-//                                        int add2 = dataSnapshot.child(userId).getValue(Integer.class);
-//
-//                                        scoreValue.setText(Integer.toString(add2));
-//                                    }
-//
-//
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(DatabaseError databaseError) {
-//
-//                                }
-//                            });
+                            db.child("Games").child(userid).child("PhotoGame").child("Score").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot child: dataSnapshot.getChildren()){
+                                        if (child.getKey().equals(userId)){
+                                            int add2 = child.getValue(Integer.class);
+
+                                            scoreValue.setText(Integer.toString(add2));
+                                        }
+
+                                    }
+
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
 
                         }
 
