@@ -1,5 +1,7 @@
 package com.example.onpus.weddingpanda.fragment;
 
+import android.Manifest;
+import android.hardware.Camera;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -60,6 +62,7 @@ public class Album extends Fragment {
 
     @BindView(R.id.lyj_recycler)
     RecyclerView recyclerAlbumView;
+    int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @BindView(R.id.iconprof)
     ImageView icon;
@@ -129,7 +132,22 @@ public class Album extends Fragment {
                 break;
             case R.id.item2_btn_addphoto:
 //                launchActivity(SimpleScannerFragment.class);
+                String[] permissos = {"android.permission.CAMERA"};
 
+//                if(ContextCompat.checkSelfPermission(getContext(), "android.permission.CAMERA") == PackageManager.PERMISSION_GRANTED) {
+//                    SimpleScannerFragment frag2 = new SimpleScannerFragment();
+//                    FragmentManager fragmentManager2 = getFragmentManager();
+//                    fragmentManager2.beginTransaction()
+//                            .add(R.id.albumFrag
+//                                    , frag2)
+//                            .addToBackStack(null)
+//                            .commit();
+//                }
+//                else{
+//                    ActivityCompat.requestPermissions(getActivity(), new String[]{"android.permission.CAMERA"}, REQUEST_CODE_ASK_PERMISSIONS);
+//
+//
+//                }
                 SimpleScannerFragment frag2 = new SimpleScannerFragment();
                 FragmentManager fragmentManager2 = getFragmentManager();
                 fragmentManager2.beginTransaction()

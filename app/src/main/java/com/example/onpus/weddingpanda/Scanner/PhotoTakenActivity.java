@@ -113,6 +113,8 @@ public class PhotoTakenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_taken);
+//        ActivityCompat.requestPermissions(PhotoTakenActivity.this,
+//                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
 
         setTitle("Take your photo");
         ButterKnife.bind(this);
@@ -329,7 +331,22 @@ public class PhotoTakenActivity extends AppCompatActivity {
         else{
             ArrayList<Uri> newTemp = new ArrayList<>();
             for (Bitmap map:temp){
-                newTemp.add(getImageUri(PhotoTakenActivity.this,map));
+                if (map!=null)
+                    if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_EXTERNAL_STORAGE") == PackageManager.PERMISSION_GRANTED) {
+
+                       if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == PackageManager.PERMISSION_GRANTED){
+                           newTemp.add(getImageUri(PhotoTakenActivity.this,map));
+
+                       }else{
+                           ActivityCompat.requestPermissions(PhotoTakenActivity.this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 1);
+
+                       }
+
+                    }
+                    else{
+                        ActivityCompat.requestPermissions(PhotoTakenActivity.this, new String[]{"android.permission.READ_EXTERNAL_STORAGE"}, 1);
+                        ActivityCompat.requestPermissions(PhotoTakenActivity.this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 1);
+                    }
             }
             upload(newTemp);
 
@@ -339,9 +356,13 @@ public class PhotoTakenActivity extends AppCompatActivity {
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        //
+
+
         Bitmap resized = Bitmap.createScaledBitmap(inImage,(int)(inImage.getWidth()*0.4), (int)(inImage.getHeight()*0.4), true);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), resized, "Title", null);
         return Uri.parse(path);
+
     }
 
     private void upload(final ArrayList<Uri> listphotos) {
@@ -508,6 +529,8 @@ public class PhotoTakenActivity extends AppCompatActivity {
     public NewAlbumItem(){
 
         }
+
+
 
     public NewAlbumItem(String image, String sender, String comment,String id ) {
             this.image = image;

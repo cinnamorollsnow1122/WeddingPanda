@@ -1,13 +1,20 @@
 package com.example.onpus.weddingpanda.Scanner;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.hardware.Camera;
+
+import com.example.onpus.weddingpanda.R;
 
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
@@ -18,6 +25,7 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 public class SimpleScannerFragment extends Fragment implements ZBarScannerView.ResultHandler {
     private ZBarScannerView mScannerView;
+    int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,9 +37,16 @@ public class SimpleScannerFragment extends Fragment implements ZBarScannerView.R
     public void onResume() {
         super.onResume();
         mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
-    }
+        if (ContextCompat.checkSelfPermission(getContext(), "android.permission.CAMERA") == PackageManager.PERMISSION_GRANTED) {
+            mScannerView.startCamera();
 
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{"android.permission.CAMERA"}, REQUEST_CODE_ASK_PERMISSIONS);
+
+
+            mScannerView.startCamera();
+        }
+    }
     @Override
     public void handleResult(Result rawResult) {
         Toast.makeText(getActivity(), "Contents = " + rawResult.getContents() +
