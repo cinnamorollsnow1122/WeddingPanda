@@ -273,6 +273,7 @@ public void dialogClicked(View v) {
             username.setText(userinfo.get(position).getName());
             type.setText(userinfo.get(position).getUserType());
             //check guest ans status : 1. not answer 2. Correct ans 3. Wrong ans 4. Lose
+            answerstatus.setVisibility(View.VISIBLE);
             if (!answerlistid.contains(userinfo.get(position).getId())){
                 answerstatus.setText("Not answered");
 
