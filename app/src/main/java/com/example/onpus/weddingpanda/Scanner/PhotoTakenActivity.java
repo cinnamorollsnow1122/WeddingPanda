@@ -115,7 +115,7 @@ public class PhotoTakenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_taken);
 //        ActivityCompat.requestPermissions(PhotoTakenActivity.this,
 //                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
-
+//jojo
         setTitle("Take your photo");
         ButterKnife.bind(this);
         initialiseView();
