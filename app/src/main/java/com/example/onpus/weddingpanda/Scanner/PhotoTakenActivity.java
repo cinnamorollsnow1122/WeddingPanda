@@ -89,7 +89,7 @@ public class PhotoTakenActivity extends AppCompatActivity {
     String albumid;
     // This output image file uri is used by camera app to save taken picture.
     private Uri outputImgUri;
-
+//hi
     // Save the camera taken picture in this folder.
     private File pictureSaveFolderPath;
 
