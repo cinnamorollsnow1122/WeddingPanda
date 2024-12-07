@@ -57,7 +57,7 @@
                     android:id="@+id/item1_btn_addcate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/common_google_signin_btn_icon_light"
+                    android:src="@drawable/ic_add_black_24dp"
                     fab:fab_label="Add category"
                     fab:fab_size="mini" />
 
@@ -65,7 +65,7 @@
                     android:id="@+id/item2_btn_additem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/common_google_signin_btn_icon_light_normal"
+                    android:src="@drawable/ic_add_black_24dp"
                     fab:fab_label="Add Item"
                     fab:fab_size="mini" />
 

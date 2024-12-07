@@ -49,12 +49,14 @@
             android:layout_height="match_parent"
             android:src="@drawable/album"
             android:id="@+id/getAwardCicle"
+            android:scaleType="fitCenter"
             android:layout_centerInParent="true"
             />
 
         <TextView
             android:id="@+id/rewardUser"
-            android:textSize="30dp"
+            android:textSize="20dp"
+            android:textColor="@color/colorwhite"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"

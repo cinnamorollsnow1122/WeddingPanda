@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/weddingpanda.iml" filepath="$PROJECT_DIR$/weddingpanda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weddingPanda.iml" filepath="$PROJECT_DIR$/weddingPanda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/weddingPanda.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.main.iml" filepath="$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/library/weddingPanda.library.unitTest.iml" />
     </modules>
   </component>
 </project>

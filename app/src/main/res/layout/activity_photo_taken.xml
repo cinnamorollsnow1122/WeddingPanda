@@ -20,7 +20,7 @@
             android:id="@+id/sendCamera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Take A Picture"/>
+            android:text="Upload "/>
         <ImageView
             android:visibility="gone"
             android:layout_below="@+id/take_picture_button"
