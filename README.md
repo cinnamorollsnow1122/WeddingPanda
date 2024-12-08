@@ -31,6 +31,13 @@ Firebase Dependencies: Update the Firebase libraries in the build.gradle file to
 
 ![image](https://github.com/user-attachments/assets/c7380377-19dc-4d25-829e-259e156c2fb3)
 
+![image](https://github.com/user-attachments/assets/54c59850-7253-4f17-a540-dc7f80c269ad)
+
+## Known Issues
+
+Compatibility with Android API levels above 26 may require updating the SDK and dependencies.
+Firebase integrations may need reconfiguration if using a newer version.
+
 ## Disclaimer
 This project is no longer actively maintained.
 
