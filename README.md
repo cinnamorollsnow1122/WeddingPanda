@@ -1,6 +1,13 @@
 # WeddingPanda Overview
 This project is an interactive mobile application designed to provide a modern solution for wedding planning and guest engagement. The app offers a blend of planning tools, interactive games, and a shared album platform to make weddings more memorable and enjoyable.
 
+## Known Issues
+
+Compatibility with Android API levels above 26 may require updating the SDK and dependencies.
+Firebase integrations may need reconfiguration if using a newer version.
+
+## Disclaimer
+This project is no longer actively maintained.
 ## Features
 ### 🎉 Game Mode
 Includes various mini-games that guests can play simultaneously during the wedding.
@@ -33,13 +40,6 @@ Firebase Dependencies: Update the Firebase libraries in the build.gradle file to
 
 ![image](https://github.com/user-attachments/assets/54c59850-7253-4f17-a540-dc7f80c269ad)
 
-## Known Issues
-
-Compatibility with Android API levels above 26 may require updating the SDK and dependencies.
-Firebase integrations may need reconfiguration if using a newer version.
-
-## Disclaimer
-This project is no longer actively maintained.
 
 
 
