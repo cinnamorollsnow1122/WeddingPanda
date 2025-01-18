@@ -1,6 +1,12 @@
 # WeddingPanda Overview
 This project is an interactive mobile application designed to provide a modern solution for wedding planning and guest engagement. The app offers a blend of planning tools, interactive games, and a shared album platform to make weddings more memorable and enjoyable.
 
+## Tech Stack
+#### Programming Language: Java
+#### IDE: Android Studio
+#### Database: Firebase (for real-time data syncing)
+#### UI Framework: XML-based Android UI components
+
 ## Known Issues
 
 Compatibility with Android API levels above 26 may require updating the SDK and dependencies.
@@ -19,12 +25,6 @@ Guests can upload, view, and share pictures, creating a shared digital album for
 
 ### 🗓️ Planning Tools
 Offers basic planning tools to assist couples in organizing their wedding seamlessly.
-
-## Tech Stack
-#### Programming Language: Java
-#### IDE: Android Studio
-#### Database: Firebase (for real-time data syncing)
-#### UI Framework: XML-based Android UI components
 
 ## Challenges
 As this project was developed with older technologies, some dependencies may no longer be supported or runnable on modern platforms. If you encounter issues running the app, consider the following:
