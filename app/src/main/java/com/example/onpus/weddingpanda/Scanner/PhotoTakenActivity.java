@@ -89,7 +89,7 @@ public class PhotoTakenActivity extends AppCompatActivity {
     String albumid;
     // This output image file uri is used by camera app to save taken picture.
     private Uri outputImgUri;
-
+//hi
     // Save the camera taken picture in this folder.
     private File pictureSaveFolderPath;
 
@@ -115,7 +115,7 @@ public class PhotoTakenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_taken);
 //        ActivityCompat.requestPermissions(PhotoTakenActivity.this,
 //                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
-
+//jojo
         setTitle("Take your photo");
         ButterKnife.bind(this);
         initialiseView();
